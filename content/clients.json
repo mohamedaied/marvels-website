@@ -171,34 +171,14 @@
       "color": "gold"
     },
     {
-      "name_ar": "لينك سوليوشنز",
-      "name_en": "Link Solutions",
-      "sector_ar": "شركة برمجيات",
-      "sector_en": "Software company",
-      "logo": "/uploads/clients/link.jpg",
-      "initial_ar": "ل",
-      "initial_en": "L",
-      "color": "blue"
-    },
-    {
       "name_ar": "محمود أفندي",
       "name_en": "Mahmoud Effendi Coffee",
       "sector_ar": "قهوة ومشروبات",
       "sector_en": "Coffee & beverages",
-      "logo": "",
+      "logo": "/uploads/392819054_1005132604181732_1280579150634346900_n.jpg",
       "initial_ar": "م",
       "initial_en": "M",
       "color": "orange"
-    },
-    {
-      "name_ar": "الجيزة للدواجن",
-      "name_en": "Giza Poultry",
-      "sector_ar": "كتاكيت وأعلاف دواجن",
-      "sector_en": "Chicks & poultry feed",
-      "logo": "",
-      "initial_ar": "ج",
-      "initial_en": "G",
-      "color": "gold"
     }
   ]
 }

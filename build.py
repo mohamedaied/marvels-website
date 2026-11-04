@@ -74,21 +74,19 @@ SLUGS = ["index", "reels", "podcast", "ads", "studio", "pricing", "audit"]
 
 def href(lang, slug):
     """Link to a page in the same language (works on any static host and in the preview)."""
-    if lang == "ar":
-        return "./" if slug == "index" else f"{slug}.html"
-    return "index.html" if slug == "index" else f"{slug}.html"
+    return "./" if slug == "index" else slug
 
 def other_lang_href(lang, slug):
     if lang == "ar":
-        return "en/index.html" if slug == "index" else f"en/{slug}.html"
-    return "../" if slug == "index" else f"../{slug}.html"
+        return "en/" if slug == "index" else f"en/{slug}"
+    return "../" if slug == "index" else f"../{slug}"
 
 def asset(lang, path):
     return (path if lang == "ar" else "../" + path)
 
 def url_of(lang, slug):
     base = CONFIG["domain"] + ("/" if lang == "ar" else "/en/")
-    return base if slug == "index" else base + slug + ".html"
+    return base if slug == "index" else base + slug
 
 def L(lang, ar, en):
     return ar if lang == "ar" else en
@@ -164,16 +162,89 @@ def footer(lang):
 </footer>
 <a class="chat-fab" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف تفاصيل أكتر.", "Hi Marvels, I'd like to know more."))}" aria-label="{L(lang, "كلمنا على واتساب", "Chat on WhatsApp")}">{ICON_CHAT}<span>{L(lang, "كلمنا واتساب", "WhatsApp us")}</span></a>'''
 
+SVC_NAMES = {"reels": ("تصوير ومونتاج ريلز", "Reels production"), "podcast": ("إنتاج وتسجيل بودكاست", "Podcast production"),
+             "ads": ("إدارة الإعلانات الممولة", "Paid ads management"), "studio": ("إيجار استوديو تصوير", "Studio rental")}
+CRUMB = {"reels": ("ريلز", "Reels"), "podcast": ("بودكاست", "Podcast"), "ads": ("إعلانات", "Ads"), "studio": ("الاستوديو", "Studio"),
+         "pricing": ("الأسعار", "Pricing"), "experience": ("خبرتنا", "Experience"), "blog": ("مقالات", "Articles"), "audit": ("Audit مجاني", "Free audit")}
+
+def business_ld(lang):
+    c, d = CONFIG, CONFIG["domain"]
+    b = {"@type": "ProfessionalService", "@id": d + "/#business", "name": "Marvels",
+         "alternateName": "Marvels Marketing & Studio",
+         "description": L(lang, "وكالة ماركتنج واستوديو محتوى في العبور: ريلز، بودكاست، إعلانات ممولة، واستوديو للإيجار.",
+                          "Marketing agency and content studio in Obour City: reels, podcasts, paid ads and studio rental."),
+         "url": d + L(lang, "/", "/en/"), "logo": d + "/assets/apple-touch-icon.png", "image": d + "/assets/og.png",
+         "telephone": "+" + c["wa_number"],
+         "address": {"@type": "PostalAddress", "streetAddress": c["address"][lang],
+                     "addressLocality": L(lang, "مدينة العبور", "Obour City"), "addressRegion": L(lang, "القليوبية", "Qalyubia"),
+                     "addressCountry": "EG"},
+         "areaServed": [{"@type": "City", "name": n} for n in L(lang, ["العبور", "مدينتي", "مدينة المستقبل", "الشروق", "القاهرة"],
+                                                                     ["Obour City", "Madinaty", "Mostakbal City", "El Shorouk", "Cairo"])],
+         "priceRange": "EGP 700 - 30,000",
+         "knowsLanguage": ["ar", "en"],
+         "hasOfferCatalog": {"@type": "OfferCatalog", "name": L(lang, "خدمات Marvels", "Marvels services"),
+                             "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": L(lang, *v),
+                                                  "url": url_of(lang, k)}} for k, v in SVC_NAMES.items()]}}
+    if c["email"]:
+        b["email"] = c["email"]["en"] if isinstance(c["email"], dict) else c["email"]
+    if c["social"]:
+        b["sameAs"] = list(c["social"].values())
+    return b
+
+def json_ld(lang, slug, title, desc, art, img):
+    d = CONFIG["domain"]
+    home = url_of(lang, "index")
+    graph = []
+    if slug == "index":
+        graph.append(business_ld(lang))
+        graph.append({"@type": "WebSite", "@id": d + "/#website", "name": "Marvels", "url": home,
+                      "inLanguage": lang, "publisher": {"@id": d + "/#business"}})
+    else:
+        crumbs = [("Marvels", home)]
+        if art:
+            crumbs.append((L(lang, *CRUMB["blog"]), url_of(lang, "blog")))
+            crumbs.append((L(lang, *art["title"]), url_of(lang, slug)))
+        else:
+            crumbs.append((L(lang, *CRUMB.get(slug, (title, title))), url_of(lang, slug)))
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "name": n, "item": u} for i, (n, u) in enumerate(crumbs)]})
+    if slug in SVC_NAMES:
+        graph.append({"@type": "Service", "name": L(lang, *SVC_NAMES[slug]), "description": desc, "url": url_of(lang, slug),
+                      "serviceType": L(lang, *SVC_NAMES[slug]),
+                      "provider": {"@type": "ProfessionalService", "@id": d + "/#business", "name": "Marvels"},
+                      "areaServed": L(lang, "العبور والقاهرة الجديدة والشروق ومدينتي", "Obour City, New Cairo, El Shorouk, Madinaty")})
+    if art:
+        a = {"@type": "BlogPosting", "headline": L(lang, *art["title"]), "description": desc, "url": url_of(lang, slug),
+             "mainEntityOfPage": url_of(lang, slug), "image": img, "inLanguage": lang,
+             "author": {"@type": "Organization", "name": "Marvels", "url": home},
+             "publisher": {"@type": "Organization", "name": "Marvels", "logo": {"@type": "ImageObject", "url": d + "/assets/apple-touch-icon.png"}}}
+        if art["date"]:
+            a["datePublished"] = art["date"]
+        graph.append(a)
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("</", "<\\/")
+    return f'<script type="application/ld+json">{data}</script>'
+
 def head(lang, slug, title, desc, for_artifact=False):
     fonts = "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..900&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap"
-    alt = f'<link rel="alternate" hreflang="ar" href="{url_of("ar", slug)}"><link rel="alternate" hreflang="en" href="{url_of("en", slug)}">'
+    alt = (f'<link rel="alternate" hreflang="ar" href="{url_of("ar", slug)}"><link rel="alternate" hreflang="en" href="{url_of("en", slug)}">'
+           f'<link rel="alternate" hreflang="x-default" href="{url_of("ar", slug)}">')
+    art = next((a for a in ARTICLES if a["slug"] == slug), None)
+    og_img = CONFIG["domain"] + "/assets/og.png"
+    if art and art["cover"]:
+        og_img = art["cover"] if art["cover"].startswith("http") else CONFIG["domain"] + "/" + art["cover"].lstrip("/")
+    ld = json_ld(lang, slug, title, desc, art, og_img)
     common = f'''<title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="wa-number" content="{esc(CONFIG["wa_number"])}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
-<meta property="og:type" content="website">
-<meta property="og:image" content="{CONFIG["domain"]}/assets/og.png">
+<meta property="og:type" content="{"article" if art else "website"}">
+<meta property="og:url" content="{url_of(lang, slug)}">
+<meta property="og:site_name" content="Marvels">
+<meta property="og:locale" content="{L(lang, "ar_EG", "en_US")}">
+<meta property="og:locale:alternate" content="{L(lang, "en_US", "ar_EG")}">
+<meta property="og:image" content="{esc(og_img)}">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#12324A">
 <link rel="icon" href="{asset(lang, "assets/favicon.svg")}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{asset(lang, "assets/apple-touch-icon.png")}">
@@ -182,6 +253,7 @@ def head(lang, slug, title, desc, for_artifact=False):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{fonts}">
 <link rel="stylesheet" href="{asset(lang, "assets/site.css")}">
+{ld}
 <script>document.documentElement.classList.add("js")</script>'''
     if for_artifact:
         return '<meta name="claude:viewport-fit-sides" content="cover">\n' + common
@@ -397,7 +469,7 @@ def p_index(lang):
     return title, desc, main, ""
 
 def p_reels(lang):
-    title = L(lang, "ريلز — Marvels", "Reels — Marvels")
+    title = L(lang, "تصوير ومونتاج ريلز للبيزنس في العبور — Marvels", "Reels Production for Businesses in Obour City — Marvels")
     desc = L(lang, f"سكريبت وتصوير ومونتاج ريلز في استوديو Marvels بالعبور، جاهزة للنشر والإعلان. باقات تبدأ من {money(min(p['price'] for p in PRICING['plans']))} جنيه شهريًا.",
              f"Reels scripted, shot and edited at Marvels studio in Obour City, ready to post and promote. Plans from EGP {money(min(p['price'] for p in PRICING['plans']))} a month.")
     hero = svc_hero(lang, "reels", "REELS", L(lang, "ريلز بتوقّف السكرول وبتجيب رسايل", "Reels that stop the scroll and bring in messages"),
@@ -433,7 +505,7 @@ def p_reels(lang):
     return title, desc, main, "svc-reels"
 
 def p_podcast(lang):
-    title = L(lang, "بودكاست — Marvels", "Podcast — Marvels")
+    title = L(lang, "استوديو بودكاست وتسجيل حلقات في العبور — Marvels", "Podcast Studio & Production in Obour City — Marvels")
     desc = L(lang, "سجّل البودكاست بتاعك في استوديو Marvels بالعبور: 2–3 كاميرات، مونتاج، وريلز مقصوصة من كل حلقة.",
              "Record your podcast at Marvels studio in Obour City: 2–3 cameras, editing and reels cut from every episode.")
     hero = svc_hero(lang, "podcast", "PODCAST", L(lang, "بودكاست بصوت وصورة احترافية", "A podcast that looks and sounds professional"),
@@ -468,7 +540,7 @@ def p_podcast(lang):
     return title, desc, main, "svc-podcast"
 
 def p_ads(lang):
-    title = L(lang, "إعلانات ممولة — Marvels", "Paid Ads — Marvels")
+    title = L(lang, "إدارة إعلانات ممولة فيسبوك وإنستجرام وتيك توك — Marvels", "Paid Ads Management: Meta & TikTok — Marvels")
     desc = L(lang, "إدارة إعلانات ممولة على ميتا وتيك توك من Marvels بالعبور: استهداف، تجهيز إعلانات، متابعة يومية، وتقرير بالأرقام.",
              "Paid ads on Meta and TikTok managed by Marvels in Obour City: targeting, ad creative, daily optimisation and a monthly report.")
     hero = svc_hero(lang, "ads", "ADS", L(lang, "إعلانات مبنية على الأرقام", "Ads built on numbers"),
@@ -570,7 +642,7 @@ def p_studio(lang):
     return title, desc, main, "svc-studio"
 
 def p_pricing(lang):
-    title = L(lang, "الباقات والأسعار — Marvels", "Pricing — Marvels")
+    title = L(lang, "أسعار باقات الريلز والبودكاست والاستوديو — Marvels", "Reels, Podcast & Studio Pricing — Marvels")
     desc = L(lang, "أسعار باقات Marvels: باقات ريلز شهرية، بودكاست بالحلقة أو بالشهر، وإيجار الاستوديو بالساعة.",
              "Marvels pricing: monthly reels plans, podcast by the episode or month, and hourly studio rental.")
     faq = [
@@ -632,7 +704,7 @@ def p_pricing(lang):
     return title, desc, main, ""
 
 def p_audit(lang):
-    title = L(lang, "Audit مجاني — Marvels", "Free Audit — Marvels")
+    title = L(lang, "Audit مجاني لصفحتك وإعلاناتك — Marvels", "Free Page & Ads Audit — Marvels")
     desc = L(lang, "احجز Audit مجاني لصفحتك وإعلاناتك مع Marvels: نقولك فين الرسايل والحجوزات اللي بتضيع، و3 خطوات تبدأ بيها.",
              "Book a free audit of your page and ads with Marvels: where messages and bookings slip away, and three steps to start with.")
     fields = L(lang, ["عيادة أو مركز طبي", "مطعم أو كافيه", "عقارات", "جيم أو بيوتي", "مدرسة أو سنتر", "مصنع أو شركة", "براند شخصي", "متجر أونلاين", "غير كده"],
@@ -748,7 +820,7 @@ def experience_teaser(lang):
 </section>'''
 
 def p_experience(lang):
-    title = L(lang, "خبرتنا — Marvels", "Experience — Marvels")
+    title = L(lang, "خبرتنا وعملاؤنا — Marvels", "Our Experience & Clients — Marvels")
     _names = [L(lang, c.get("name_ar", ""), c.get("name_en", "")) for c in CLIENTS]
     desc = L(lang, "براندات اشتغل معاها فريق Marvels: " + "، ".join(_names) + ".",
              "Brands the Marvels team has worked with: " + ", ".join(_names) + ".")
@@ -899,7 +971,7 @@ def post_cards(lang, exclude=None):
     return '<div class="post-grid">' + "".join(cards) + "</div>"
 
 def p_blog(lang):
-    title = L(lang, "مقالات — Marvels", "Articles — Marvels")
+    title = L(lang, "مقالات عن الإعلانات والريلز والبودكاست — Marvels", "Articles on Ads, Reels & Podcasts — Marvels")
     desc = L(lang, "مقالات عملية من فريق Marvels عن الإعلانات الممولة والريلز والبودكاست للبيزنس في مصر.",
              "Practical articles from the Marvels team on paid ads, reels and podcasts for businesses in Egypt.")
     main = f'''<section class="band-navy hero" style="padding-block:64px 56px">
@@ -1009,10 +1081,16 @@ def build(preview=False):
     # 404 + robots + sitemap
     _, d404, _, _ = p_index("ar")
     write(os.path.join(DIST, "404.html"), page("ar", "index", "الصفحة مش موجودة — Marvels", d404,
-        '''<section class="band-navy hero"><div class="wrap" style="grid-template-columns:1fr"><div class="hero-copy"><span class="eyebrow">404</span><h1>الصفحة دي مش موجودة</h1><p class="lead">يمكن اللينك اتغيّر. ارجع للرئيسية أو كلمنا على واتساب.</p><div class="hero-actions"><a class="btn btn-cta" href="/">الرئيسية</a><a class="btn btn-ghost" href="/en/index.html">English</a></div></div></div></section>''').replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/'))
+        '''<section class="band-navy hero"><div class="wrap" style="grid-template-columns:1fr"><div class="hero-copy"><span class="eyebrow">404</span><h1>الصفحة دي مش موجودة</h1><p class="lead">يمكن اللينك اتغيّر. ارجع للرئيسية أو كلمنا على واتساب.</p><div class="hero-actions"><a class="btn btn-cta" href="/">الرئيسية</a><a class="btn btn-ghost" href="/en/">English</a></div></div></div></section>''').replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/'))
     write(os.path.join(DIST, "robots.txt"), f"User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: {CONFIG['domain']}/sitemap.xml\n")
-    urls = "".join(f"<url><loc>{url_of(l, s)}</loc></url>" for l in ("ar", "en") for s in SLUGS)
-    write(os.path.join(DIST, "sitemap.xml"), f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
+    import datetime
+    today = datetime.date.today().isoformat()
+    dates = {a["slug"]: a["date"] for a in ARTICLES if a["date"]}
+    def u(l, s):
+        alts = "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{url_of(hl, s)}"/>' for h, hl in (("ar", "ar"), ("en", "en"), ("x-default", "ar")))
+        return f"<url><loc>{url_of(l, s)}</loc><lastmod>{dates.get(s, today)}</lastmod>{alts}</url>"
+    urls = "".join(u(l, s) for l in ("ar", "en") for s in SLUGS)
+    write(os.path.join(DIST, "sitemap.xml"), f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">{urls}</urlset>\n')
     print("built", sum(len(fs) for _, _, fs in os.walk(DIST)), "files,", len(ARTICLES), "articles,", len(CLIENTS), "clients")
 
 if __name__ == "__main__":

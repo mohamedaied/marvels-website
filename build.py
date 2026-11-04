@@ -964,7 +964,18 @@ for _a in ARTICLES:
 SLUGS = list(PAGES.keys())
 
 # ------------------------------------------------------------------ build
+def _wa_href(m):
+    from urllib.parse import quote
+    url = "https://wa.me/" + CONFIG["wa_number"]
+    msg = html.unescape(m.group(1))
+    if msg:
+        url += "?text=" + quote(msg)
+    return 'href="' + esc(url) + '" data-wa="' + m.group(1) + '"'
+
 def write(path, text):
+    # Real WhatsApp links in the HTML itself (works without JS and for crawlers).
+    if path.endswith(".html") and CONFIG["wa_number"]:
+        text = re.sub(r'href="#" data-wa="([^"]*)"', _wa_href, text)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(text)

@@ -1,6 +1,186 @@
 {
   "clients": [
     {
+      "name_ar": "مستشفى طيبة",
+      "name_en": "Tiba Hospital",
+      "sector_ar": "مستشفى",
+      "sector_en": "Hospital",
+      "logo": "/uploads/clients/tiba.jpg",
+      "initial_ar": "ط",
+      "initial_en": "T",
+      "color": "blue"
+    },
+    {
+      "name_ar": "مستشفى مصر والسودان التخصصي",
+      "name_en": "Misr & Sudan Specialized Hospital",
+      "sector_ar": "مستشفى",
+      "sector_en": "Hospital",
+      "logo": "/uploads/clients/misr-sudan.jpg",
+      "initial_ar": "م",
+      "initial_en": "M",
+      "color": "teal"
+    },
+    {
+      "name_ar": "مستشفى السلام الدولي",
+      "name_en": "As-Salam International Hospital",
+      "sector_ar": "مستشفى",
+      "sector_en": "Hospital",
+      "logo": "/uploads/clients/assalam.jpg",
+      "initial_ar": "س",
+      "initial_en": "A",
+      "color": "blue"
+    },
+    {
+      "name_ar": "مركز نيويو الطبي",
+      "name_en": "New You Medical Center",
+      "sector_ar": "مركز طبي متعدد التخصصات",
+      "sector_en": "Multi-specialty medical center",
+      "logo": "/uploads/clients/newyou.jpg",
+      "initial_ar": "ن",
+      "initial_en": "N",
+      "color": "teal"
+    },
+    {
+      "name_ar": "عيادات نوفيلو",
+      "name_en": "Novello Clinics",
+      "sector_ar": "عيادات تجميل",
+      "sector_en": "Aesthetic clinics",
+      "logo": "/uploads/clients/novello.jpg",
+      "initial_ar": "ن",
+      "initial_en": "N",
+      "color": "orange"
+    },
+    {
+      "name_ar": "عيادات بينك مي أب",
+      "name_en": "Pink Me Up Clinics",
+      "sector_ar": "عيادات تجميل",
+      "sector_en": "Aesthetic clinics",
+      "logo": "/uploads/clients/pinkmeup.jpg",
+      "initial_ar": "ب",
+      "initial_en": "P",
+      "color": "orange"
+    },
+    {
+      "name_ar": "داون تاون كلينكس",
+      "name_en": "Downtown Clinics",
+      "sector_ar": "عيادات طبية",
+      "sector_en": "Medical clinics",
+      "logo": "/uploads/clients/downtown.jpg",
+      "initial_ar": "د",
+      "initial_en": "D",
+      "color": "teal"
+    },
+    {
+      "name_ar": "دار الضحى لطب الأسنان",
+      "name_en": "Dar Al Duha Dental",
+      "sector_ar": "طب الأسنان",
+      "sector_en": "Dental care",
+      "logo": "/uploads/clients/duha.jpg",
+      "initial_ar": "ض",
+      "initial_en": "D",
+      "color": "blue"
+    },
+    {
+      "name_ar": "مجمع كوكبة تبوك الطبي",
+      "name_en": "Kawkabat Tabuk Medical Complex",
+      "sector_ar": "مجمع طبي",
+      "sector_en": "Medical complex",
+      "logo": "/uploads/clients/kawkaba.jpg",
+      "initial_ar": "ك",
+      "initial_en": "K",
+      "color": "teal"
+    },
+    {
+      "name_ar": "درة القاضي للعلاج الطبيعي",
+      "name_en": "Dorrat Alkadi Physiotherapy",
+      "sector_ar": "علاج طبيعي",
+      "sector_en": "Physiotherapy",
+      "logo": "",
+      "initial_ar": "د",
+      "initial_en": "D",
+      "color": "gold"
+    },
+    {
+      "name_ar": "القاضي الطبية",
+      "name_en": "Alkadi Medical Company",
+      "sector_ar": "شركة طبية",
+      "sector_en": "Medical company",
+      "logo": "/uploads/clients/alkadi.jpg",
+      "initial_ar": "ق",
+      "initial_en": "A",
+      "color": "blue"
+    },
+    {
+      "name_ar": "مجمع أسرار الدواء الطبي",
+      "name_en": "Asrar Al Dawaa Medical Complex",
+      "sector_ar": "مجمع طبي",
+      "sector_en": "Medical complex",
+      "logo": "/uploads/clients/asrar.jpg",
+      "initial_ar": "أ",
+      "initial_en": "A",
+      "color": "teal"
+    },
+    {
+      "name_ar": "صيدليات الخالع",
+      "name_en": "Al Khalea Pharmacy",
+      "sector_ar": "صيدليات",
+      "sector_en": "Pharmacy",
+      "logo": "/uploads/clients/khalea.jpg",
+      "initial_ar": "خ",
+      "initial_en": "K",
+      "color": "blue"
+    },
+    {
+      "name_ar": "د. أحمد عايد النجار",
+      "name_en": "Dr. Ahmed Ayed El Nagar",
+      "sector_ar": "علاج طبيعي وتأهيل",
+      "sector_en": "Physical therapy & rehab",
+      "logo": "/uploads/clients/drahmed.jpg",
+      "initial_ar": "أ",
+      "initial_en": "A",
+      "color": "orange"
+    },
+    {
+      "name_ar": "إيت رايت",
+      "name_en": "Eat Right (ER nutrition)",
+      "sector_ar": "تغذية علاجية",
+      "sector_en": "Clinical nutrition",
+      "logo": "/uploads/clients/ernutrition.jpg",
+      "initial_ar": "إ",
+      "initial_en": "E",
+      "color": "teal"
+    },
+    {
+      "name_ar": "جذور",
+      "name_en": "JOZOR",
+      "sector_ar": "منتجات تجميل طبيعية",
+      "sector_en": "Natural beauty & personal care",
+      "logo": "/uploads/clients/jozor.jpg",
+      "initial_ar": "ج",
+      "initial_en": "J",
+      "color": "gold"
+    },
+    {
+      "name_ar": "أحمد سعيد ناجي للساعات والمجوهرات",
+      "name_en": "Ahmed Saeed Naji Watches & Jewelry",
+      "sector_ar": "ساعات ومجوهرات",
+      "sector_en": "Watches & jewelry",
+      "logo": "/uploads/clients/naji.jpg",
+      "initial_ar": "أ",
+      "initial_en": "A",
+      "color": "gold"
+    },
+    {
+      "name_ar": "لينك سوليوشنز",
+      "name_en": "Link Solutions",
+      "sector_ar": "شركة برمجيات",
+      "sector_en": "Software company",
+      "logo": "/uploads/clients/link.jpg",
+      "initial_ar": "ل",
+      "initial_en": "L",
+      "color": "blue"
+    },
+    {
       "name_ar": "محمود أفندي",
       "name_en": "Mahmoud Effendi Coffee",
       "sector_ar": "قهوة ومشروبات",
@@ -9,26 +189,6 @@
       "initial_ar": "م",
       "initial_en": "M",
       "color": "orange"
-    },
-    {
-      "name_ar": "مركز نيويو الطبي",
-      "name_en": "New You Medical Center",
-      "sector_ar": "مركز طبي متعدد التخصصات",
-      "sector_en": "Multi-specialty medical centre",
-      "logo": "",
-      "initial_ar": "ن",
-      "initial_en": "N",
-      "color": "teal"
-    },
-    {
-      "name_ar": "مستشفى طيبة",
-      "name_en": "Taiba Hospital",
-      "sector_ar": "مستشفى",
-      "sector_en": "Hospital",
-      "logo": "",
-      "initial_ar": "ط",
-      "initial_en": "T",
-      "color": "blue"
     },
     {
       "name_ar": "الجيزة للدواجن",

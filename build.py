@@ -807,12 +807,12 @@ def experience_teaser(lang):
     if not CLIENTS:
         return ""
     items = "".join(
-        f'<li><div class="logo-box sm">{client_tile(lang, c)}</div><span>{esc(_client_bits(lang, c)[0])}</span></li>' for c in CLIENTS)
+        f'<li><div class="logo-box sm">{client_tile(lang, c)}</div><span>{esc(_client_bits(lang, c)[0])}</span></li>' for c in [c for c in CLIENTS if c.get("logo")][:8])
     return f'''<section>
   <div class="wrap">
     <div class="section-head">
       <h2>{L(lang, "اشتغلنا مع", "We've worked with")}</h2>
-      <p>{L(lang, "براندات في الرعاية الصحية والأغذية والصناعة، في مصر والسعودية.", "Brands in healthcare, food and industry, in Egypt and Saudi Arabia.")}</p>
+      <p>{L(lang, "مستشفيات وعيادات وبراندات في التجميل والأغذية والمجوهرات والتكنولوجيا، في مصر والسعودية.", "Hospitals, clinics and brands in beauty, food, jewelry and tech, in Egypt and Saudi Arabia.")}</p>
     </div>
     <ul class="logo-strip">{items}</ul>
     <a class="btn btn-line mt" href="{href(lang, "experience")}">{L(lang, "شوف كل العملاء ←", "See all clients →")}</a>
@@ -822,13 +822,13 @@ def experience_teaser(lang):
 def p_experience(lang):
     title = L(lang, "خبرتنا وعملاؤنا — Marvels", "Our Experience & Clients — Marvels")
     _names = [L(lang, c.get("name_ar", ""), c.get("name_en", "")) for c in CLIENTS]
-    desc = L(lang, "براندات اشتغل معاها فريق Marvels: " + "، ".join(_names) + ".",
-             "Brands the Marvels team has worked with: " + ", ".join(_names) + ".")
+    desc = L(lang, "براندات اشتغل معاها فريق Marvels: " + "، ".join(_names[:6]) + " وغيرهم.",
+             "Brands the Marvels team has worked with: " + ", ".join(_names[:6]) + " and more.")
     facts = [
         (L(lang, "8 سنين", "8 years"), L(lang, "في الإعلانات المدفوعة وتحليل أداء البراندات", "in paid media and brand performance analysis")),
         (L(lang, "دولتين", "2 markets"), L(lang, "مصر والسعودية", "Egypt and Saudi Arabia")),
         (L(lang, "4 منصات", "4 platforms"), L(lang, "ميتا · جوجل · تيك توك · سناب شات", "Meta · Google · TikTok · Snapchat")),
-        (L(lang, "3 قطاعات", "3 sectors"), L(lang, "رعاية صحية · أغذية ومشروبات · صناعة وزراعة", "Healthcare · Food & beverage · Industry & agriculture")),
+        (L(lang, "+20 براند", "20+ brands"), L(lang, "رعاية صحية · تجميل · أغذية · مجوهرات · تكنولوجيا · صناعة", "Healthcare · Beauty · Food · Jewelry · Tech · Industry")),
     ]
     facts_html = "".join(f'<div class="fact"><b>{a}</b><span>{b}</span></div>' for a, b in facts)
     main = f'''<section class="band-navy hero" style="padding-block:64px 56px">

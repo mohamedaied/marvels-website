@@ -1,0 +1,44 @@
+{
+  "clients": [
+    {
+      "name_ar": "محمود أفندي",
+      "name_en": "Mahmoud Effendi Coffee",
+      "sector_ar": "قهوة ومشروبات",
+      "sector_en": "Coffee & beverages",
+      "logo": "",
+      "initial_ar": "م",
+      "initial_en": "M",
+      "color": "orange"
+    },
+    {
+      "name_ar": "مركز نيويو الطبي",
+      "name_en": "New You Medical Center",
+      "sector_ar": "مركز طبي متعدد التخصصات",
+      "sector_en": "Multi-specialty medical centre",
+      "logo": "",
+      "initial_ar": "ن",
+      "initial_en": "N",
+      "color": "teal"
+    },
+    {
+      "name_ar": "مستشفى طيبة",
+      "name_en": "Taiba Hospital",
+      "sector_ar": "مستشفى",
+      "sector_en": "Hospital",
+      "logo": "",
+      "initial_ar": "ط",
+      "initial_en": "T",
+      "color": "blue"
+    },
+    {
+      "name_ar": "الجيزة للدواجن",
+      "name_en": "Giza Poultry",
+      "sector_ar": "كتاكيت وأعلاف دواجن",
+      "sector_en": "Chicks & poultry feed",
+      "logo": "",
+      "initial_ar": "ج",
+      "initial_en": "G",
+      "color": "gold"
+    }
+  ]
+}

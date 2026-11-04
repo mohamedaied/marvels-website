@@ -1,0 +1,161 @@
+# Marvels — لوحة التحكم (Sveltia CMS)
+# الـrepo: mohamedaied/marvels-website
+backend:
+  name: github
+  repo: mohamedaied/marvels-website
+  branch: main
+
+site_url: https://marvels-digital.com
+display_url: https://marvels-digital.com
+logo_url: /assets/favicon.svg
+
+media_folder: static/uploads
+public_folder: /uploads
+
+collections:
+  # ------------------------------------------------------------ المقالات
+  - name: articles
+    label: "المقالات"
+    label_singular: "مقال"
+    description: "كل مقال ليه نسخة عربي ونسخة إنجليزي. لو سبت الإنجليزي فاضي، الصفحة الإنجليزي هتعرض العربي."
+    folder: content/articles
+    extension: json
+    format: json
+    create: true
+    delete: true
+    identifier_field: title_en
+    slug: "{{slug}}"
+    summary: "{{title_ar}}"
+    sortable_fields: [date, title_ar]
+    fields:
+      - { label: "العنوان (عربي)", name: title_ar, widget: string }
+      - { label: "العنوان (English)", name: title_en, widget: string, hint: "بيتعمل منه لينك المقال، فاكتبه بالإنجليزي" }
+      - label: "الخدمة"
+        name: service
+        widget: select
+        default: reels
+        options:
+          - { label: "إعلانات", value: ads }
+          - { label: "ريلز", value: reels }
+          - { label: "بودكاست", value: podcast }
+          - { label: "استوديو", value: studio }
+      - { label: "تاريخ النشر", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "مدة القراءة (دقايق)", name: minutes, widget: number, value_type: int, min: 1, max: 60, default: 4 }
+      - { label: "صورة الغلاف", name: cover, widget: image, required: false, hint: "اختياري. الأفضل صورة عرضية 1600×900" }
+      - { label: "مسودة — مش هتظهر في الموقع", name: draft, widget: boolean, default: false, required: false }
+      - { label: "ملخص قصير (عربي)", name: excerpt_ar, widget: text, hint: "سطر أو اتنين بيظهروا في كارت المقال" }
+      - { label: "ملخص قصير (English)", name: excerpt_en, widget: text, required: false }
+      - label: "المقال (عربي)"
+        name: body_ar
+        widget: markdown
+        buttons: [bold, link, heading-two, heading-three, bulleted-list, numbered-list]
+        editor_components: [image]
+      - label: "المقال (English)"
+        name: body_en
+        widget: markdown
+        required: false
+        buttons: [bold, link, heading-two, heading-three, bulleted-list, numbered-list]
+        editor_components: [image]
+
+  # ------------------------------------------------------------ بيانات الموقع
+  - name: site
+    label: "بيانات الموقع"
+    editor:
+      preview: false
+    files:
+      # ---------------- العملاء
+      - name: clients
+        label: "خبرتنا — العملاء"
+        file: content/clients.json
+        format: json
+        fields:
+          - label: "العملاء"
+            name: clients
+            widget: list
+            summary: "{{fields.name_ar}}"
+            add_to_top: false
+            fields:
+              - { label: "اسم العميل (عربي)", name: name_ar, widget: string }
+              - { label: "اسم العميل (English)", name: name_en, widget: string, required: false }
+              - { label: "الصناعة / المجال (عربي)", name: sector_ar, widget: string }
+              - { label: "الصناعة / المجال (English)", name: sector_en, widget: string, required: false }
+              - { label: "اللوجو", name: logo, widget: image, required: false, hint: "PNG أو SVG بخلفية شفافة أو بيضا. لو مفيش لوجو هيظهر حرف بدله" }
+              - { label: "الحرف البديل لو مفيش لوجو (عربي)", name: initial_ar, widget: string, required: false }
+              - { label: "الحرف البديل لو مفيش لوجو (English)", name: initial_en, widget: string, required: false }
+              - label: "لون الحرف البديل"
+                name: color
+                widget: select
+                default: orange
+                required: false
+                options:
+                  - { label: "برتقالي", value: orange }
+                  - { label: "تيل", value: teal }
+                  - { label: "أزرق", value: blue }
+                  - { label: "دهبي", value: gold }
+
+      # ---------------- الأسعار
+      - name: pricing
+        label: "الباقات والأسعار"
+        file: content/pricing.json
+        format: json
+        fields:
+          - label: "باقات الريلز الشهرية"
+            name: plans
+            widget: list
+            summary: "{{fields.name}} — {{fields.price}}"
+            fields:
+              - { label: "اسم الباقة", name: name, widget: string }
+              - { label: "السعر الشهري (جنيه)", name: price, widget: number, value_type: int, min: 0 }
+              - { label: "باقة مميزة (لونها كحلي)", name: featured, widget: boolean, default: false, required: false }
+              - { label: "شارة فوق الباقة (عربي)", name: tag_ar, widget: string, required: false }
+              - { label: "شارة فوق الباقة (English)", name: tag_en, widget: string, required: false }
+              - label: "بتشمل (عربي)"
+                name: features_ar
+                widget: list
+                field: { label: "نقطة", name: item, widget: string }
+              - label: "بتشمل (English)"
+                name: features_en
+                widget: list
+                required: false
+                field: { label: "Point", name: item, widget: string }
+          - label: "أسعار البودكاست"
+            name: podcast
+            widget: list
+            summary: "{{fields.name_ar}} — {{fields.price}}"
+            fields:
+              - { label: "الخدمة (عربي)", name: name_ar, widget: string }
+              - { label: "الخدمة (English)", name: name_en, widget: string, required: false }
+              - { label: "بتشمل (عربي)", name: desc_ar, widget: string }
+              - { label: "بتشمل (English)", name: desc_en, widget: string, required: false }
+              - { label: "السعر (جنيه)", name: price, widget: number, value_type: int, min: 0 }
+              - { label: "الوحدة (عربي)", name: unit_ar, widget: string, hint: "مثلًا: جنيه / حلقة" }
+              - { label: "الوحدة (English)", name: unit_en, widget: string, required: false }
+          - { label: "سعر ساعة إيجار الاستوديو (جنيه)", name: studio_rate, widget: number, value_type: int, min: 0 }
+          - { label: "سعر الـ4 ريلز التجريبية (جنيه)", name: trial_price, widget: number, value_type: int, min: 0 }
+          - { label: "نسبة خصم المؤسسين %", name: founders_discount, widget: number, value_type: int, min: 0, max: 100 }
+
+      # ---------------- التواصل والإعدادات
+      - name: settings
+        label: "التواصل والإعدادات"
+        file: content/settings.json
+        format: json
+        fields:
+          - { label: "رقم الواتساب (للزراير والفورمات)", name: wa_number, widget: string, hint: "بالصيغة الدولية من غير + ولا مسافات، مثلًا 201068271600" }
+          - { label: "الرقم زي ما يظهر (عربي)", name: phone_ar, widget: string }
+          - { label: "الرقم زي ما يظهر (English)", name: phone_en, widget: string, required: false }
+          - { label: "الإيميل", name: email, widget: string, required: false, hint: "لو فاضي مش هيظهر" }
+          - { label: "العنوان (عربي)", name: address_ar, widget: string }
+          - { label: "العنوان (English)", name: address_en, widget: string, required: false }
+          - { label: "لينك جوجل ماب", name: maps_url, widget: string, required: false }
+          - { label: "مواعيد العمل (عربي)", name: hours_ar, widget: string, required: false, hint: "لو فاضية مش هتظهر" }
+          - { label: "مواعيد العمل (English)", name: hours_en, widget: string, required: false }
+          - { label: "Instagram", name: instagram, widget: string, required: false, hint: "اللينك كامل. الحسابات الفاضية مش هتظهر" }
+          - { label: "Facebook", name: facebook, widget: string, required: false }
+          - { label: "TikTok", name: tiktok, widget: string, required: false }
+          - { label: "YouTube", name: youtube, widget: string, required: false }
+          - { label: "LinkedIn", name: linkedin, widget: string, required: false }
+          - { label: "إظهار شريط الافتتاح تحت الصفحة الرئيسية", name: launch_show, widget: boolean, default: true, required: false }
+          - { label: "عنوان الشريط (عربي)", name: launch_title_ar, widget: string, required: false }
+          - { label: "عنوان الشريط (English)", name: launch_title_en, widget: string, required: false }
+          - { label: "نص الشريط (عربي)", name: launch_text_ar, widget: string, required: false }
+          - { label: "نص الشريط (English)", name: launch_text_en, widget: string, required: false }

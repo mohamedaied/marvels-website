@@ -1,0 +1,84 @@
+{
+  "plans": [
+    {
+      "name": "Reels Start",
+      "price": 10000,
+      "featured": false,
+      "tag_ar": "",
+      "tag_en": "",
+      "features_ar": [
+        "8 ريلز: سكريبت وتصوير ومونتاج",
+        "8 تصميمات",
+        "كتابة الكابشن",
+        "الرد على الرسايل"
+      ],
+      "features_en": [
+        "8 reels: script, shoot and edit",
+        "8 designs",
+        "Captions",
+        "Inbox replies"
+      ]
+    },
+    {
+      "name": "Reels Grow",
+      "price": 18000,
+      "featured": true,
+      "tag_ar": "اختيارنا لمعظم البيزنس",
+      "tag_en": "Our pick for most businesses",
+      "features_ar": [
+        "12 ريلز + 12 تصميم",
+        "يوم تصوير شهري في الاستوديو",
+        "إدارة الإعلانات الممولة",
+        "تقرير أداء شهري"
+      ],
+      "features_en": [
+        "12 reels + 12 designs",
+        "A monthly studio shoot day",
+        "Paid ads management",
+        "Monthly performance report"
+      ]
+    },
+    {
+      "name": "Reels Pro",
+      "price": 30000,
+      "featured": false,
+      "tag_ar": "",
+      "tag_en": "",
+      "features_ar": [
+        "20 ريلز + 16 تصميم",
+        "يومين تصوير في الشهر",
+        "حلقتين بودكاست",
+        "حملات إعلانية + تقرير أسبوعي"
+      ],
+      "features_en": [
+        "20 reels + 16 designs",
+        "Two shoot days a month",
+        "Two podcast episodes",
+        "Ad campaigns + weekly report"
+      ]
+    }
+  ],
+  "podcast": [
+    {
+      "name_ar": "حلقة بودكاست كاملة",
+      "name_en": "Full podcast episode",
+      "desc_ar": "ساعة تسجيل، 2–3 كاميرات، مونتاج الحلقة + 3 ريلز مقصوصة منها",
+      "desc_en": "One hour recording, 2–3 cameras, edited episode + 3 reels cut from it",
+      "price": 5000,
+      "unit_ar": "جنيه / حلقة",
+      "unit_en": "EGP / episode"
+    },
+    {
+      "name_ar": "باقة بودكاست شهرية",
+      "name_en": "Monthly podcast plan",
+      "desc_ar": "4 حلقات + 12 ريلز مقصوصة + نشر على يوتيوب والسوشيال",
+      "desc_en": "4 episodes + 12 reels + publishing to YouTube and social",
+      "price": 16000,
+      "unit_ar": "جنيه / شهر",
+      "unit_en": "EGP / month"
+    }
+  ],
+  "studio_rate": 700,
+  "trial_price": 6000,
+  "founders_discount": 25
+}

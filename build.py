@@ -180,7 +180,7 @@ def business_ld(lang):
                      "addressCountry": "EG"},
          "areaServed": [{"@type": "City", "name": n} for n in L(lang, ["العبور", "مدينتي", "مدينة المستقبل", "الشروق", "القاهرة"],
                                                                      ["Obour City", "Madinaty", "Mostakbal City", "El Shorouk", "Cairo"])],
-         "priceRange": "EGP 700 - 30,000",
+         "priceRange": "EGP 700 - 60,000",
          "knowsLanguage": ["ar", "en"],
          "hasOfferCatalog": {"@type": "OfferCatalog", "name": L(lang, "خدمات Marvels", "Marvels services"),
                              "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": L(lang, *v),
@@ -474,7 +474,7 @@ def p_reels(lang):
              f"Reels scripted, shot and edited at Marvels studio in Obour City, ready to post and promote. Plans from EGP {money(min(p['price'] for p in PRICING['plans']))} a month.")
     hero = svc_hero(lang, "reels", "REELS", L(lang, "ريلز بتوقّف السكرول وبتجيب رسايل", "Reels that stop the scroll and bring in messages"),
         L(lang, "من الفكرة للسكريبت للتصوير للمونتاج. بنصوّر ريلز الشهر كله في يوم واحد في الاستوديو، وبنجهزها للإعلان كمان.", "From idea to script, shoot and edit. We film the whole month's reels in one studio day and prepare them for ads too."),
-        f'<a class="btn btn-cta" href="{href(lang, "pricing")}">{L(lang, "شوف باقات الريلز", "See reels plans")}</a><a class="btn btn-ghost" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف عن خدمة الريلز.", "Hi Marvels, I want to know about your reels service."))}">{L(lang, "اسأل على واتساب", "Ask on WhatsApp")}</a>')
+        f'<a class="btn btn-cta" href="{href(lang, "pricing")}">{L(lang, "شوف الباقات", "See plans")}</a><a class="btn btn-ghost" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف عن خدمة الريلز.", "Hi Marvels, I want to know about your reels service."))}">{L(lang, "اسأل على واتساب", "Ask on WhatsApp")}</a>')
     main = hero + f'''<section>
   <div class="wrap two-col">
     <div>
@@ -497,7 +497,7 @@ def p_reels(lang):
 </section>
 <section class="band-surface">
   <div class="wrap">
-    <div class="section-head"><h2>{L(lang, "باقات الريلز", "Reels plans")}</h2><p>{L(lang, "عقد 3 شهور على الأقل، والدفع مقدم أول كل شهر. ميزانية الإعلان نفسها بتتدفع للمنصة مباشرة.", "Minimum 3-month contract, paid at the start of each month. Ad spend is paid to the platform directly.")}</p></div>
+    <div class="section-head"><h2>{L(lang, "الباقات الشهرية", "Monthly plans")}</h2><p>{L(lang, "عقد 3 شهور على الأقل، والدفع مقدم أول كل شهر. ميزانية الإعلان نفسها بتتدفع للمنصة مباشرة.", "Minimum 3-month contract, paid at the start of each month. Ad spend is paid to the platform directly.")}</p></div>
     {reels_plans(lang)}
   </div>
 </section>
@@ -559,7 +559,7 @@ def p_ads(lang):
     </div>
     <aside class="aside-box">
       <h3>{L(lang, "التسعير", "Pricing")}</h3>
-      <p>{L(lang, "إدارة الإعلانات داخلة في باقتي Reels Grow وReels Pro. لو عايز إدارة إعلانات بس من غير محتوى، كلمنا ونعملك عرض سعر حسب حجم حملاتك.", "Ads management is included in the Reels Grow and Reels Pro plans. For ads management without content, contact us for a quote based on your campaign size.")}</p>
+      <p>{L(lang, "إدارة الإعلانات داخلة في الباقات الثلاثة: بميزانية حتى 15,000 ج في Start، وحتى 30,000 ج في Grow، ومفتوحة في Pro. لو عايز إدارة إعلانات بس من غير محتوى، كلمنا ونعملك عرض سعر حسب حجم حملاتك.", "Ads management is included in all three plans: budgets up to EGP 15,000 on Start, up to EGP 30,000 on Grow, and open on Pro. For ads management without content, contact us for a quote based on your campaign size.")}</p>
       <p class="note">{L(lang, "ميزانية الإعلان نفسها بتتدفع للمنصة مباشرة من حسابك، ومش جزء من سعر الباقة.", "Ad spend is paid directly to the platform from your account and is not part of the plan price.")}</p>
       <a class="btn btn-line" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز عرض سعر لإدارة الإعلانات.", "Hi Marvels, I'd like a quote for ads management."))}">{L(lang, "اطلب عرض سعر", "Request a quote")}</a>
     </aside>
@@ -683,7 +683,7 @@ def p_pricing(lang):
       <span class="big latin">−{PRICING["founders_discount"]}%</span>
     </div>
     <div>
-      <div class="section-head"><h2>{L(lang, "باقات الريلز الشهرية", "Monthly reels plans")}</h2><p>{L(lang, "الباقة بتشمل السكريبت والتصوير في الاستوديو والمونتاج والنشر.", "Plans include scripting, studio shooting, editing and posting.")}</p></div>
+      <div class="section-head"><h2>{L(lang, "الباقات الشهرية", "Monthly plans")}</h2><p>{L(lang, "كل باقة فيها بوستات وريلز وأيام تصوير في الاستوديو وإدارة إعلانات وتقارير أداء.", "Every plan covers posts, reels, studio shoot days, ads management and performance reports.")}</p></div>
       {reels_plans(lang)}
     </div>
     <div>

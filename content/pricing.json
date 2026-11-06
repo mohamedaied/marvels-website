@@ -1,60 +1,68 @@
 {
   "plans": [
     {
-      "name": "Reels Start",
-      "price": 10000,
+      "name": "Start",
+      "price": 15000,
       "featured": false,
       "tag_ar": "",
       "tag_en": "",
       "features_ar": [
-        "8 ريلز: سكريبت وتصوير ومونتاج",
-        "8 تصميمات",
-        "كتابة الكابشن",
-        "الرد على الرسايل"
+        "8 بوستات (محتوى + تصميم)",
+        "4 فيديوهات ريلز بالمونتاج",
+        "يوم تصوير واحد في الاستوديو",
+        "إدارة إعلانات بميزانية حتى 15,000 ج",
+        "تقارير أداء"
       ],
       "features_en": [
-        "8 reels: script, shoot and edit",
-        "8 designs",
-        "Captions",
-        "Inbox replies"
+        "8 posts (copy + design)",
+        "4 edited reels",
+        "One studio shoot day",
+        "Ads management for budgets up to EGP 15,000",
+        "Performance reports"
       ]
     },
     {
-      "name": "Reels Grow",
-      "price": 18000,
+      "name": "Grow",
+      "price": 30000,
       "featured": true,
       "tag_ar": "اختيارنا لمعظم البيزنس",
       "tag_en": "Our pick for most businesses",
       "features_ar": [
-        "12 ريلز + 12 تصميم",
-        "يوم تصوير شهري في الاستوديو",
-        "إدارة الإعلانات الممولة",
-        "تقرير أداء شهري"
+        "8 بوستات (محتوى + تصميم)",
+        "12 فيديو ريلز بالمونتاج",
+        "يومين تصوير في الاستوديو",
+        "إدارة إعلانات بميزانية حتى 30,000 ج",
+        "تقارير أداء"
       ],
       "features_en": [
-        "12 reels + 12 designs",
-        "A monthly studio shoot day",
-        "Paid ads management",
-        "Monthly performance report"
+        "8 posts (copy + design)",
+        "12 edited reels",
+        "Two studio shoot days",
+        "Ads management for budgets up to EGP 30,000",
+        "Performance reports"
       ]
     },
     {
-      "name": "Reels Pro",
-      "price": 30000,
+      "name": "Pro",
+      "price": 60000,
       "featured": false,
       "tag_ar": "",
       "tag_en": "",
       "features_ar": [
-        "20 ريلز + 16 تصميم",
-        "يومين تصوير في الشهر",
-        "حلقتين بودكاست",
-        "حملات إعلانية + تقرير أسبوعي"
+        "10 بوستات (محتوى + تصميم)",
+        "20 فيديو ريلز بالمونتاج",
+        "3 أيام تصوير في الاستوديو",
+        "إدارة إعلانات بميزانية مفتوحة",
+        "مودريشن: الرد على الرسايل والتعليقات",
+        "تقارير أداء"
       ],
       "features_en": [
-        "20 reels + 16 designs",
-        "Two shoot days a month",
-        "Two podcast episodes",
-        "Ad campaigns + weekly report"
+        "10 posts (copy + design)",
+        "20 edited reels",
+        "Three studio shoot days",
+        "Ads management with an open budget",
+        "Moderation: replies to messages and comments",
+        "Performance reports"
       ]
     }
   ],

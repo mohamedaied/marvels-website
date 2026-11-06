@@ -15,6 +15,16 @@ def _load(name):
 
 SET = _load("settings.json")
 PRICING = _load("pricing.json")
+try:
+    HOME = _load("home.json")
+except FileNotFoundError:
+    HOME = {}
+
+def H(key, lang, default=""):
+    """Home-page text from content/home.json, falling back to the other language, then to default."""
+    a, e = (HOME.get(key + "_ar") or "").strip(), (HOME.get(key + "_en") or "").strip()
+    v = (a or e) if lang == "ar" else (e or a)
+    return v or default
 
 def _pair(key):
     a, e = (SET.get(key + "_ar") or "").strip(), (SET.get(key + "_en") or "").strip()
@@ -95,7 +105,7 @@ def L(lang, ar, en):
 def header(lang, slug):
     nav = [("reels", "ريلز", "Reels"), ("podcast", "بودكاست", "Podcast"), ("ads", "إعلانات", "Ads"),
            ("studio", "الاستوديو", "Studio"), ("pricing", "الأسعار", "Pricing"),
-           ("experience", "خبرتنا", "Experience"), ("blog", "مقالات", "Articles")]
+           ("experience", "خبراتنا", "Experience"), ("blog", "مقالات", "Articles")]
     cur = "blog" if slug.startswith("blog") else slug
     links = "".join(
         f'<a href="{href(lang, s)}"{" aria-current=\"page\"" if s == cur else ""}>{L(lang, a, e)}</a>' for s, a, e in nav)
@@ -114,7 +124,7 @@ def header(lang, slug):
 
 def footer(lang):
     c = CONFIG
-    soc = "".join(f'<li><a href="{esc(u)}" rel="noopener">{n}</a></li>' for n, u in c["social"].items())
+    soc = "".join(f'<li><a href="{esc(u)}" target="_blank" rel="noopener noreferrer">{n}</a></li>' for n, u in c["social"].items())
     soc_col = f'<div><h3>{L(lang, "تابعنا", "Follow")}</h3><ul>{soc}</ul></div>' if soc else ""
     email_li = f'<li>{esc(c["email"][lang])}</li>' if c["email"] else ""
     hours_li = f'<li>{esc(c["hours"][lang])}</li>' if c["hours"] else ""
@@ -147,7 +157,7 @@ def footer(lang):
       <div>
         <h3>{L(lang, "الشركة", "Company")}</h3>
         <ul>
-          <li><a href="{href(lang, "experience")}">{L(lang, "خبرتنا", "Experience")}</a></li>
+          <li><a href="{href(lang, "experience")}">{L(lang, "خبراتنا", "Experience")}</a></li>
           <li><a href="{href(lang, "blog")}">{L(lang, "مقالات", "Articles")}</a></li>
           <li><a href="{href(lang, "audit")}">{L(lang, "Audit مجاني", "Free audit")}</a></li>
         </ul>
@@ -165,7 +175,7 @@ def footer(lang):
 SVC_NAMES = {"reels": ("تصوير ومونتاج ريلز", "Reels production"), "podcast": ("إنتاج وتسجيل بودكاست", "Podcast production"),
              "ads": ("إدارة الإعلانات الممولة", "Paid ads management"), "studio": ("إيجار استوديو تصوير", "Studio rental")}
 CRUMB = {"reels": ("ريلز", "Reels"), "podcast": ("بودكاست", "Podcast"), "ads": ("إعلانات", "Ads"), "studio": ("الاستوديو", "Studio"),
-         "pricing": ("الأسعار", "Pricing"), "experience": ("خبرتنا", "Experience"), "blog": ("مقالات", "Articles"), "audit": ("Audit مجاني", "Free audit")}
+         "pricing": ("الأسعار", "Pricing"), "experience": ("خبراتنا", "Experience"), "blog": ("مقالات", "Articles"), "audit": ("Audit مجاني", "Free audit")}
 
 def business_ld(lang):
     c, d = CONFIG, CONFIG["domain"]
@@ -286,13 +296,13 @@ def page(lang, slug, title, desc, main, body_class="", for_artifact=False):
 # ------------------------------------------------------------------ shared blocks
 def services_grid(lang):
     items = [
-        ("reels", "REELS", "ريلز بتوقّف السكرول: سكريبت وتصوير في الاستوديو ومونتاج، جاهزة للنشر وللإعلان.",
+        ("reels", "REELS", "ريلز بتشد من أول 3 ثواني: فكرة وسكريبت وتصوير ومونتاج، جاهزة تتنشر وتشتغل إعلان.",
          "Scroll-stopping reels: script, studio shoot and edit, ready to post and to run as ads."),
-        ("podcast", "PODCAST", "حلقات بصوت وصورة احترافية، وكل حلقة بيطلع منها ريلز تنشرها طول الأسبوع.",
+        ("podcast", "PODCAST", "حلقات بصورة وصوت استوديو، وكل حلقة بتطلّعلك ريلز تكفيك طول الأسبوع.",
          "Professionally shot episodes, each one cut into reels you can post all week."),
-        ("ads", "ADS", "إعلانات ممولة على ميتا وتيك توك مبنية على الأرقام: رسايل وحجوزات ومبيعات.",
+        ("ads", "ADS", "حملات على فيسبوك وإنستجرام وتيك توك، هدفها رسايل وحجوزات ومبيعات، مش لايكات.",
          "Paid campaigns on Meta and TikTok built on numbers: messages, bookings and sales."),
-        ("studio", "STUDIO", "استوديو مجهز في العبور للإيجار بالساعة للكرييتورز والمصورين وصناع المحتوى.",
+        ("studio", "STUDIO", "استوديو مجهز بالإضاءة والصوت في العبور، تأجره بالساعة وتصوّر على طول.",
          "A ready studio in Obour City, rented by the hour to creators and photographers."),
     ]
     more = L(lang, "اعرف أكتر ←", "Learn more →")
@@ -305,7 +315,7 @@ def cta_band(lang):
     return f'''<section class="band-navy cta-band">
   <div class="wrap">
     <div>
-      <h2>{L(lang, "عايز تعرف صفحتك بتخسر فين؟", "Want to know where your page is losing customers?")}</h2>
+      <h2>{L(lang, "عايز تعرف صفحتك بتخسر عملاء فين؟", "Want to know where your page is losing customers?")}</h2>
       <p>{L(lang, "Audit مجاني: نراجع صفحتك وإعلاناتك ونقولك فين الرسايل والحجوزات اللي بتضيع، و3 حاجات تبدأ بيها فورًا.", "A free audit: we review your page and ads, show you where messages and bookings slip away, and give you three fixes to start with.")}</p>
     </div>
     <div class="center-actions">
@@ -399,49 +409,58 @@ def p_index(lang):
     title = L(lang, "Marvels — ماركتنج واستوديو في العبور", "Marvels — Marketing & Studio, Obour City")
     desc = L(lang, "وكالة ماركتنج واستوديو محتوى في العبور: ريلز، بودكاست، إعلانات ممولة، واستوديو للإيجار. احجز Audit مجاني لصفحتك.",
              "Marketing agency and content studio in Obour City: reels, podcast, paid ads and studio rental. Book a free audit of your page.")
-    why = [
-        (L(lang, "فريق واحد من الاستراتيجية للنتيجة", "One team from strategy to results"),
-         L(lang, "الاستراتيجية والإنتاج وإدارة الإعلانات عند فريق واحد بمسؤولية واحدة. الفيديو بيتصوّر وهو متصمم من الأول عشان يشتغل كإعلان، فمفيش فجوة بين وكالة بتخطط واستوديو بينفّذ.",
-            "Strategy, production and media buying sit with one accountable team. Every video is shot to perform as an ad from day one, so there is no gap between an agency that plans and a studio that executes.")),
-        (L(lang, "خبرة 8 سنين في الإعلانات المدفوعة", "Eight years in paid media"),
-         L(lang, "أدرنا حملات لبراندات في الرعاية الصحية والأغذية والصناعة في مصر والسعودية، على ميتا وجوجل وتيك توك وسناب شات، وأهدافها حجوزات وعملاء محتملين ومبيعات.",
-            "We have run campaigns for healthcare, food and industrial brands in Egypt and Saudi Arabia, across Meta, Google, TikTok and Snapchat, optimised for bookings, leads and sales.")),
-        (L(lang, "مؤشرات أداء متفق عليها من أول يوم", "KPIs agreed on day one"),
-         L(lang, "قبل ما نصرف أي ميزانية بنحدد معاك الهدف والتكلفة المقبولة لكل عميل. وكل شهر بتستلم تقرير بتكلفة الرسالة والحجز وأداء كل محتوى، واجتماع نقرر فيه نزوّد على إيه ونوقف إيه.",
-            "Before any budget is spent we agree the goal and an acceptable cost per customer. Each month you get a report on cost per message, cost per booking and content performance, plus a review of what to scale and what to stop.")),
-        (L(lang, "إنتاج منظم بمواعيد ثابتة", "Production on a fixed schedule"),
-         L(lang, "خطة المحتوى والسكريبتات بتوصلك قبل بداية الشهر بـ5 أيام، ويوم تصوير ثابت في الاستوديو بيغطي الشهر كله. كده المحتوى بينزل في ميعاده من غير ما ياخد من وقتك كل أسبوع.",
-            "Your content plan and scripts arrive five days before each month starts, and one fixed studio day covers the whole month, so content ships on time without taking your time every week.")),
-    ]
-    why_html = "".join(f'<div class="why-item"><h3>{h}</h3><p>{p}</p></div>' for h, p in why)
+    why = [(L(lang, (w.get("title_ar") or w.get("title_en") or ""), (w.get("title_en") or w.get("title_ar") or "")),
+            L(lang, (w.get("text_ar") or w.get("text_en") or ""), (w.get("text_en") or w.get("text_ar") or "")))
+           for w in HOME.get("why", [])]
+    why_html = "".join(f'<div class="why-item"><span class="why-n latin">{i:02d}</span><h3>{esc(h)}</h3><p>{esc(p)}</p></div>' for i, (h, p) in enumerate(why, 1))
     steps = [
-        (L(lang, "Audit مجاني", "Free audit"), L(lang, "نراجع صفحتك وإعلاناتك ونحدد الهدف.", "We review your page and ads and set the goal.")),
-        (L(lang, "خطة المحتوى", "Content plan"), L(lang, "خطة وسكريبتات الشهر توصلك قبل أوله بـ5 أيام.", "The month's plan and scripts reach you 5 days ahead.")),
-        (L(lang, "يوم التصوير", "Shoot day"), L(lang, "يوم ثابت في الاستوديو نصوّر فيه ريلز الشهر كله.", "One fixed studio day to shoot the whole month.")),
-        (L(lang, "النشر والإعلان", "Publish and promote"), L(lang, "مونتاج ونشر وإعلانات ومتابعة يومية للرسايل.", "Editing, posting, ads and daily inbox follow-up.")),
-        (L(lang, "التقرير", "Report"), L(lang, "أرقام الشهر واجتماع 30 دقيقة نقرر فيه الجاي.", "The month's numbers and a 30-minute review.")),
+        (L(lang, "Audit مجاني", "Free audit"), L(lang, "بنراجع صفحتك وإعلاناتك، ونحدد معاك الهدف والرقم.", "We review your page and ads and agree the goal and the number.")),
+        (L(lang, "خطة الشهر", "The month's plan"), L(lang, "الأفكار والسكريبتات بتوصلك قبل التصوير بـ5 أيام.", "Ideas and scripts reach you 5 days before the shoot.")),
+        (L(lang, "التصوير", "The shoot"), L(lang, "بنصوّر محتوى الشهر في الاستوديو في أيام ثابتة.", "We film the month's content in the studio on fixed days.")),
+        (L(lang, "النشر والإعلانات", "Publish and promote"), L(lang, "مونتاج ونشر، وتشغيل الإعلانات ومتابعتها كل يوم.", "Editing, posting, and ads run and watched every day.")),
+        (L(lang, "التقرير", "The report"), L(lang, "أرقام الشهر، واجتماع نقرر فيه الخطوة الجاية.", "The month's numbers and a review to decide what's next.")),
     ]
     steps_html = "".join(f"<li><h3>{h}</h3><p>{p}</p></li>" for h, p in steps)
-    main = f'''<section class="band-navy hero">
+
+    def cta(n, cls):
+        label = H(f"cta{n}_label", lang)
+        target = (HOME.get(f"cta{n}_link") or "").strip()
+        if not label or not target:
+            return ""
+        if target == "whatsapp":
+            return f'<a class="btn {cls}" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف أكتر عن خدماتكم.", "Hi Marvels, I would like to know more about your services."))}">{esc(label)}</a>'
+        if target.startswith(("http://", "https://")):
+            return f'<a class="btn {cls}" href="{esc(target)}" target="_blank" rel="noopener noreferrer">{esc(label)}</a>'
+        return f'<a class="btn {cls}" href="{href(lang, target)}">{esc(label)}</a>'
+
+    style = (HOME.get("hero_style") or "navy").strip()
+    style = style if style in ("navy", "teal", "light", "orange") else "navy"
+    img = (HOME.get("hero_image") or "").strip()
+    if img and not img.startswith(("http://", "https://", "/")):
+        img = "/" + img
+    mark = f'<img class="hero-img" src="{esc(img)}" alt="">' if img else emblem("Marvels")
+    band = "band-navy" if style in ("navy", "teal") else ""
+    title_h = esc(H("hero_title", lang, L(lang, "محتوى بيتشاف، وإعلانات بتجيب عملاء", "Content people watch. Ads that bring customers.")))
+    main = f'''<section class="{band} hero hero-{style}">
   <div class="wrap">
     <div class="hero-copy">
-      <span class="eyebrow">{SEAM}MARKETING &amp; STUDIO · {L(lang, "العبور", "OBOUR")}</span>
-      <h1>{L(lang, "عالم كامل عشان براندك يكسب", "A whole world built to make your brand win")}</h1>
-      <p class="lead">{L(lang, "ريلز وبودكاست وإعلانات واستوديو مجهز تحت سقف واحد. بنكتب ونصوّر ونموّل، وبنتابع النتيجة بالأرقام كل شهر.", "Reels, podcast, ads and a fully equipped studio under one roof. We write, shoot and promote, then track the results in numbers every month.")}</p>
+      <span class="eyebrow">{SEAM}{esc(H("hero_eyebrow", lang, "MARKETING & STUDIO"))}</span>
+      <h1>{title_h}</h1>
+      <p class="lead">{esc(H("hero_lead", lang))}</p>
       <div class="hero-actions">
-        <a class="btn btn-cta" href="{href(lang, "audit")}">{L(lang, "احجز Audit مجاني", "Book a free audit")}</a>
-        <a class="btn btn-ghost" href="{href(lang, "pricing")}">{L(lang, "شوف الباقات", "See pricing")}</a>
+        {cta(1, "btn-cta")}
+        {cta(2, "btn-ghost")}
       </div>
     </div>
-    <div class="hero-mark">{emblem("Marvels")}</div>
+    <div class="hero-mark{" has-img" if img else ""}">{mark}</div>
   </div>
 </section>
 {launch_bar(lang)}
 <section>
   <div class="wrap">
     <div class="section-head">
-      <h2>{L(lang, "أربع قوى بتشتغل لبراندك", "Four powers working for your brand")}</h2>
-      <p>{L(lang, "كل خدمة ليها لونها وفريقها، وكلهم بيصبّوا في هدف واحد: عملاء أكتر.", "Each service has its own colour and team, and all of them serve one goal: more customers.")}</p>
+      <h2>{esc(H("services_title", lang, L(lang, "خدماتنا", "What we do")))}</h2>
+      <p>{esc(H("services_lead", lang))}</p>
     </div>
     {services_grid(lang)}
   </div>
@@ -449,8 +468,8 @@ def p_index(lang):
 <section class="band-surface">
   <div class="wrap">
     <div class="section-head">
-      <h2>{L(lang, "ليه البراندات بتختار Marvels", "Why brands choose Marvels")}</h2>
-      <p>{L(lang, "الفرق بين محتوى حلو ومحتوى بيبيع هو الخطة اللي وراه والأرقام اللي بتتابعه.", "The difference between good-looking content and content that sells is the plan behind it and the numbers that track it.")}</p>
+      <h2>{esc(H("why_title", lang, L(lang, "ليه تختار Marvels؟", "Why brands choose Marvels")))}</h2>
+      <p>{esc(H("why_lead", lang))}</p>
     </div>
     <div class="why-grid">{why_html}</div>
   </div>
@@ -459,7 +478,7 @@ def p_index(lang):
   <div class="wrap">
     <div class="section-head">
       <h2>{L(lang, "إزاي بنشتغل", "How we work")}</h2>
-      <p>{L(lang, "نفس الخطوات كل شهر، عشان المحتوى ينزل في ميعاده والنتايج تتقاس.", "The same steps every month, so content ships on time and results get measured.")}</p>
+      <p>{L(lang, "نفس الخطوات كل شهر، عشان المحتوى ينزل في ميعاده والنتيجة تتقاس.", "The same steps every month, so content ships on time and results get measured.")}</p>
     </div>
     <ol class="steps">{steps_html}</ol>
   </div>
@@ -473,16 +492,16 @@ def p_reels(lang):
     desc = L(lang, f"سكريبت وتصوير ومونتاج ريلز في استوديو Marvels بالعبور، جاهزة للنشر والإعلان. باقات تبدأ من {money(min(p['price'] for p in PRICING['plans']))} جنيه شهريًا.",
              f"Reels scripted, shot and edited at Marvels studio in Obour City, ready to post and promote. Plans from EGP {money(min(p['price'] for p in PRICING['plans']))} a month.")
     hero = svc_hero(lang, "reels", "REELS", L(lang, "ريلز بتوقّف السكرول وبتجيب رسايل", "Reels that stop the scroll and bring in messages"),
-        L(lang, "من الفكرة للسكريبت للتصوير للمونتاج. بنصوّر ريلز الشهر كله في يوم واحد في الاستوديو، وبنجهزها للإعلان كمان.", "From idea to script, shoot and edit. We film the whole month's reels in one studio day and prepare them for ads too."),
+        L(lang, "من الفكرة للسكريبت للتصوير للمونتاج. بنصوّر ريلز الشهر كله في أيام تصوير ثابتة في الاستوديو، وبنجهزها تشتغل إعلان كمان.", "From idea to script, shoot and edit. We film the whole month's reels on fixed studio days and prepare them for ads too."),
         f'<a class="btn btn-cta" href="{href(lang, "pricing")}">{L(lang, "شوف الباقات", "See plans")}</a><a class="btn btn-ghost" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف عن خدمة الريلز.", "Hi Marvels, I want to know about your reels service."))}">{L(lang, "اسأل على واتساب", "Ask on WhatsApp")}</a>')
     main = hero + f'''<section>
   <div class="wrap two-col">
     <div>
       <div class="section-head"><h2>{L(lang, "بنعمل إيه بالظبط", "What we do")}</h2></div>
       {checks([
-        (L(lang, "سكريبت مبني على جمهورك", "Scripts built on your audience"), L(lang, "كل ريلز ليه فكرة وهدف: توعية، ثقة، أو بيع. والسكريبت بيوصلك تراجعه قبل التصوير.", "Every reel has a purpose: awareness, trust or a sale. You review the script before we shoot.")),
-        (L(lang, "يوم تصوير واحد للشهر كله", "One shoot day for the month"), L(lang, "بنصوّر في الاستوديو أو في مكانك، فوقتك مش بيضيع كل أسبوع.", "In our studio or at your place, so you don't lose time every week.")),
-        (L(lang, "مونتاج بإيقاع سريع وكابشن", "Fast-paced edits with captions"), L(lang, "أول 3 ثواني متعملة عشان توقّف السكرول، والكلام مكتوب على الشاشة لأن معظم الناس بتتفرج من غير صوت.", "The first three seconds are built to stop the scroll, with on-screen text because most people watch on mute.")),
+        (L(lang, "سكريبت مبني على جمهورك", "Scripts built on your audience"), L(lang, "كل ريل ليه فكرة وهدف واضح: يعرّف الناس بيك، أو يبني ثقة، أو يبيع. والسكريبت بيوصلك تراجعه قبل التصوير.", "Every reel has a purpose: awareness, trust or a sale. You review the script before we shoot.")),
+        (L(lang, "أيام تصوير ثابتة كل شهر", "Fixed shoot days every month"), L(lang, "بنصوّر محتوى الشهر كله مرة واحدة في الاستوديو أو في مكانك، فوقتك مش بيضيع كل أسبوع.", "We film the whole month in one go, in our studio or at your place, so you don't lose time every week.")),
+        (L(lang, "مونتاج بإيقاع سريع وكابشن", "Fast-paced edits with captions"), L(lang, "أول 3 ثواني معمولة عشان توقّف السكرول، والكلام مكتوب على الشاشة لأن أغلب الناس بتتفرج من غير صوت.", "The first three seconds are built to stop the scroll, with on-screen text because most people watch on mute.")),
         (L(lang, "جاهزة للإعلان", "Ready for ads"), L(lang, "بنجهز نسخ من الريلز للإعلان الممول، ونختبر أكتر من بداية عشان نعرف أنهي واحدة بتجيب رسايل أرخص.", "We prepare ad versions and test several openings to find the one with the cheapest messages.")),
       ])}
     </div>
@@ -811,7 +830,7 @@ def experience_teaser(lang):
     return f'''<section>
   <div class="wrap">
     <div class="section-head">
-      <h2>{L(lang, "اشتغلنا مع", "We've worked with")}</h2>
+      <h2>{L(lang, "خبراتنا", "Our experience")}</h2>
       <p>{L(lang, "مستشفيات وعيادات وبراندات في التجميل والأغذية والمجوهرات والتكنولوجيا، في مصر والسعودية.", "Hospitals, clinics and brands in beauty, food, jewelry and tech, in Egypt and Saudi Arabia.")}</p>
     </div>
     <ul class="logo-strip">{items}</ul>
@@ -820,7 +839,7 @@ def experience_teaser(lang):
 </section>'''
 
 def p_experience(lang):
-    title = L(lang, "خبرتنا وعملاؤنا — Marvels", "Our Experience & Clients — Marvels")
+    title = L(lang, "خبراتنا وعملاؤنا — Marvels", "Our Experience & Clients — Marvels")
     _names = [L(lang, c.get("name_ar", ""), c.get("name_en", "")) for c in CLIENTS]
     desc = L(lang, "براندات اشتغل معاها فريق Marvels: " + "، ".join(_names[:6]) + " وغيرهم.",
              "Brands the Marvels team has worked with: " + ", ".join(_names[:6]) + " and more.")
@@ -835,8 +854,8 @@ def p_experience(lang):
   <div class="wrap" style="grid-template-columns:1fr">
     <div class="hero-copy">
       <span class="eyebrow" dir="ltr">{SEAM}OUR EXPERIENCE</span>
-      <h1>{L(lang, "خبرتنا", "Our experience")}</h1>
-      <p class="lead">{L(lang, "قبل ما نفتح Marvels، اشتغل فريقنا على حملات ومحتوى لبراندات في مصر والسعودية. ده جزء من الشغل اللي بنبني عليه.", "Before opening Marvels, our team worked on campaigns and content for brands in Egypt and Saudi Arabia. This is part of the work we build on.")}</p>
+      <h1>{L(lang, "خبراتنا", "Our experience")}</h1>
+      <p class="lead">{L(lang, "قبل ما نفتح Marvels، اشتغل فريقنا على حملات ومحتوى لأكتر من 20 براند في مصر والسعودية، من مستشفيات وعيادات لبراندات تجميل وأغذية ومجوهرات. ودي الخبرة اللي بنبدأ منها معاك.", "Before opening Marvels, our team worked on campaigns and content for brands in Egypt and Saudi Arabia. This is part of the work we build on.")}</p>
     </div>
   </div>
 </section>
@@ -844,7 +863,7 @@ def p_experience(lang):
   <div class="wrap page-gap">
     <div class="facts">{facts_html}</div>
     <div>
-      <div class="section-head"><h2>{L(lang, "براندات اشتغلنا معاها", "Brands we've worked with")}</h2></div>
+      <div class="section-head"><h2>{L(lang, "عملاؤنا", "Our clients")}</h2></div>
       {client_cards(lang)}
     </div>
   </div>

@@ -63,9 +63,83 @@ collections:
     editor:
       preview: false
     files:
+      # ---------------- الصفحة الرئيسية
+      - name: home
+        label: "الصفحة الرئيسية — الهيدر والأقسام"
+        file: content/home.json
+        format: json
+        fields:
+          - label: "شكل الهيدر"
+            name: hero_style
+            widget: select
+            default: navy
+            options:
+              - { label: "كحلي (الأساسي)", value: navy }
+              - { label: "تيل", value: teal }
+              - { label: "فاتح", value: light }
+              - { label: "برتقالي", value: orange }
+          - { label: "صورة الهيدر", name: hero_image, widget: image, required: false, hint: "اختياري. لو رفعت صورة هتظهر مكان اللوجو. الأفضل صورة مربعة أو طولية 1200 بكسل" }
+          - { label: "السطر الصغير فوق العنوان (عربي)", name: hero_eyebrow_ar, widget: string, required: false }
+          - { label: "السطر الصغير فوق العنوان (English)", name: hero_eyebrow_en, widget: string, required: false }
+          - { label: "العنوان الكبير (عربي)", name: hero_title_ar, widget: string }
+          - { label: "العنوان الكبير (English)", name: hero_title_en, widget: string, required: false }
+          - { label: "الكلام تحت العنوان (عربي)", name: hero_lead_ar, widget: text, required: false }
+          - { label: "الكلام تحت العنوان (English)", name: hero_lead_en, widget: text, required: false }
+          - { label: "الزرار الأول (عربي)", name: cta1_label_ar, widget: string, required: false }
+          - { label: "الزرار الأول (English)", name: cta1_label_en, widget: string, required: false }
+          - label: "الزرار الأول بيودّي على"
+            name: cta1_link
+            default: audit
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "الزرار التاني (عربي)", name: cta2_label_ar, widget: string, required: false, hint: "سيبه فاضي لو مش عايز زرار تاني" }
+          - { label: "الزرار التاني (English)", name: cta2_label_en, widget: string, required: false }
+          - label: "الزرار التاني بيودّي على"
+            name: cta2_link
+            default: pricing
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "عنوان قسم الخدمات (عربي)", name: services_title_ar, widget: string, required: false }
+          - { label: "عنوان قسم الخدمات (English)", name: services_title_en, widget: string, required: false }
+          - { label: "الكلام تحت عنوان الخدمات (عربي)", name: services_lead_ar, widget: string, required: false }
+          - { label: "الكلام تحت عنوان الخدمات (English)", name: services_lead_en, widget: string, required: false }
+          - { label: "عنوان قسم ليه Marvels (عربي)", name: why_title_ar, widget: string, required: false }
+          - { label: "عنوان قسم ليه Marvels (English)", name: why_title_en, widget: string, required: false }
+          - { label: "الكلام تحت عنوان ليه Marvels (عربي)", name: why_lead_ar, widget: string, required: false }
+          - { label: "الكلام تحت عنوان ليه Marvels (English)", name: why_lead_en, widget: string, required: false }
+          - label: "أسباب اختيار Marvels"
+            name: why
+            widget: list
+            summary: "{{fields.title_ar}}"
+            fields:
+              - { label: "العنوان (عربي)", name: title_ar, widget: string }
+              - { label: "العنوان (English)", name: title_en, widget: string, required: false }
+              - { label: "الشرح (عربي)", name: text_ar, widget: text }
+              - { label: "الشرح (English)", name: text_en, widget: text, required: false }
+
       # ---------------- العملاء
       - name: clients
-        label: "خبرتنا — العملاء"
+        label: "خبراتنا — العملاء"
         file: content/clients.json
         format: json
         fields:

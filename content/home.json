@@ -1,0 +1,62 @@
+{
+  "hero_style": "navy",
+  "hero_image": "",
+  "hero_eyebrow_ar": "ماركتنج واستوديو محتوى · العبور",
+  "hero_eyebrow_en": "MARKETING & CONTENT STUDIO · OBOUR",
+  "hero_title_ar": "محتوى بيتشاف، وإعلانات بتجيب عملاء",
+  "hero_title_en": "Content people watch. Ads that bring customers.",
+  "hero_lead_ar": "Marvels وكالة ماركتنج واستوديو تصوير في مكان واحد. بنخطط المحتوى، ونصوّره في الاستوديو بتاعنا، ونشغّله إعلانات، ونوريك النتيجة بالأرقام كل شهر.",
+  "hero_lead_en": "Marvels is a marketing agency and a production studio in one place. We plan your content, shoot it in our studio, run it as ads, and show you the results in numbers every month.",
+  "cta1_label_ar": "احجز Audit مجاني",
+  "cta1_label_en": "Book a free audit",
+  "cta1_link": "audit",
+  "cta2_label_ar": "شوف الباقات",
+  "cta2_label_en": "See plans",
+  "cta2_link": "pricing",
+  "services_title_ar": "خدماتنا",
+  "services_title_en": "What we do",
+  "services_lead_ar": "كل اللي براندك محتاجه على السوشيال، من الفكرة لحد ما العميل يبعتلك رسالة.",
+  "services_lead_en": "Everything your brand needs on social, from the first idea to the moment a customer messages you.",
+  "why_title_ar": "ليه تختار Marvels؟",
+  "why_title_en": "Why brands choose Marvels",
+  "why_lead_ar": "لأنك محتاج عملاء، مش مجرد بوستات حلوة.",
+  "why_lead_en": "Because you need customers, not just nice-looking posts.",
+  "why": [
+    {
+      "title_ar": "الوكالة والاستوديو في مكان واحد",
+      "title_en": "Agency and studio under one roof",
+      "text_ar": "أغلب البراندات بتتعامل مع وكالة بتخطط، ومصوّر بيصوّر، وحد تالت بيشغّل الإعلانات، وكل واحد بيرمي المسؤولية على التاني. عندنا التلاتة فريق واحد، فالفيديو بيتصوّر من الأول وهو معمول عشان يشتغل إعلان.",
+      "text_en": "Most brands deal with an agency that plans, a crew that shoots and someone else who runs the ads, and each blames the other. With us it is one team, so every video is shot from the start to work as an ad."
+    },
+    {
+      "title_ar": "8 سنين في الإعلانات الممولة",
+      "title_en": "Eight years in paid media",
+      "text_ar": "شغّلنا حملات لمستشفيات وعيادات ومراكز طبية وبراندات أغذية وتجميل ومجوهرات في مصر والسعودية. بنعرف الرسالة المفروض تتكلف كام، والحملة بتقع إمتى، ونتصرف إزاي قبل ما تقع.",
+      "text_en": "We have run campaigns for hospitals, clinics, medical centres and food, beauty and jewelry brands in Egypt and Saudi Arabia. We know what a message should cost, when a campaign is about to fade, and what to do before it does."
+    },
+    {
+      "title_ar": "بنتفق على الرقم قبل ما نبدأ",
+      "title_en": "We agree the number before we start",
+      "text_ar": "قبل أول جنيه في الإعلانات، بنحدد معاك الهدف: كام رسالة، كام حجز، وأقصى تكلفة مقبولة للعميل. وده الرقم اللي بنتحاسب عليه آخر الشهر.",
+      "text_en": "Before the first pound is spent, we agree the target with you: how many messages, how many bookings and the most a customer can cost. That is the number we answer for at the end of the month."
+    },
+    {
+      "title_ar": "تقرير بالأرقام، مش باللايكات",
+      "title_en": "Reports in numbers, not likes",
+      "text_ar": "كل شهر بتستلم تقرير فيه تكلفة الرسالة، وتكلفة الحجز، وأحسن فيديو جاب نتيجة، وإيه اللي هنزوّد عليه وإيه اللي هنوقفه الشهر الجاي.",
+      "text_en": "Every month you get a report with cost per message, cost per booking, the video that performed best, and what we will scale or stop next month."
+    },
+    {
+      "title_ar": "المحتوى في ميعاده من غير ما ياخد وقتك",
+      "title_en": "Content on time, without taking your time",
+      "text_ar": "خطة الشهر والسكريبتات بتوصلك قبل التصوير بـ5 أيام، وبنصوّر المحتوى كله في أيام تصوير ثابتة. إنت بتراجع وتوافق، وإحنا علينا الباقي.",
+      "text_en": "The month's plan and scripts reach you five days before the shoot, and everything is filmed on fixed shoot days. You review and approve; we handle the rest."
+    },
+    {
+      "title_ar": "خبرة حقيقية في المجال الطبي",
+      "title_en": "Real experience in healthcare",
+      "text_ar": "عدد كبير من عملائنا مستشفيات وعيادات، فبنعرف ضوابط الإعلان الطبي كويس، وبنراجع كل محتوى عليها قبل ما يتنشر.",
+      "text_en": "Many of our clients are hospitals and clinics, so we know the rules for medical advertising and check every piece of content against them before it goes live."
+    }
+  ]
+}

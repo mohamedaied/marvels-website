@@ -39,6 +39,7 @@ CONFIG = {
     "address": _pair("address") or {"ar": "", "en": ""},
     "hours": _pair("hours"),
     "maps": (SET.get("maps_url") or "#").strip(),
+    "gbp": (SET.get("google_business") or "").strip(),
     "social": {n: SET[k].strip() for k, n in [("instagram", "Instagram"), ("facebook", "Facebook"), ("tiktok", "TikTok"), ("youtube", "YouTube"), ("linkedin", "LinkedIn")] if (SET.get(k) or "").strip()},
     "studio_rate": int(PRICING.get("studio_rate", 700)),
 }
@@ -151,6 +152,7 @@ def footer(lang):
           <li><a href="#" data-wa="">{L(lang, "واتساب", "WhatsApp")}: <span dir="ltr">{esc(c["phone"][lang])}</span></a></li>
           {email_li}
           <li><a href="{esc(c["maps"])}" target="_blank" rel="noopener">{esc(c["address"][lang])}</a></li>
+          {f'<li><a href="{esc(c["gbp"])}" target="_blank" rel="noopener noreferrer">{L(lang, "قيّمنا على جوجل", "Review us on Google")}</a></li>' if c["gbp"] else ""}
           {hours_li}
         </ul>
       </div>
@@ -197,8 +199,11 @@ def business_ld(lang):
                                                   "url": url_of(lang, k)}} for k, v in SVC_NAMES.items()]}}
     if c["email"]:
         b["email"] = c["email"]["en"] if isinstance(c["email"], dict) else c["email"]
-    if c["social"]:
-        b["sameAs"] = list(c["social"].values())
+    same = list(c["social"].values()) + ([c["gbp"]] if c["gbp"] else [])
+    if same:
+        b["sameAs"] = same
+    if c["gbp"]:
+        b["hasMap"] = c["gbp"]
     return b
 
 def json_ld(lang, slug, title, desc, art, img):

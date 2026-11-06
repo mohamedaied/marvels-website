@@ -541,6 +541,7 @@ collections:
           - { label: "العنوان (عربي)", name: address_ar, widget: string }
           - { label: "العنوان (English)", name: address_en, widget: string, required: false }
           - { label: "لينك جوجل ماب", name: maps_url, widget: string, required: false }
+          - { label: "لينك بروفايل جوجل (Google Business)", name: google_business, widget: string, required: false, hint: "بيظهر في الفوتر كـ'قيّمنا على جوجل'" }
           - { label: "مواعيد العمل (عربي)", name: hours_ar, widget: string, required: false, hint: "لو فاضية مش هتظهر" }
           - { label: "مواعيد العمل (English)", name: hours_en, widget: string, required: false }
           - { label: "Instagram", name: instagram, widget: string, required: false, hint: "اللينك كامل. الحسابات الفاضية مش هتظهر" }

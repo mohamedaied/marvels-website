@@ -423,15 +423,7 @@ def p_index(lang):
     steps_html = "".join(f"<li><h3>{h}</h3><p>{p}</p></li>" for h, p in steps)
 
     def cta(n, cls):
-        label = H(f"cta{n}_label", lang)
-        target = (HOME.get(f"cta{n}_link") or "").strip()
-        if not label or not target:
-            return ""
-        if target == "whatsapp":
-            return f'<a class="btn {cls}" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف أكتر عن خدماتكم.", "Hi Marvels, I would like to know more about your services."))}">{esc(label)}</a>'
-        if target.startswith(("http://", "https://")):
-            return f'<a class="btn {cls}" href="{esc(target)}" target="_blank" rel="noopener noreferrer">{esc(label)}</a>'
-        return f'<a class="btn {cls}" href="{href(lang, target)}">{esc(label)}</a>'
+        return cta_btn(lang, HOME, n, cls, L(lang, "أهلًا Marvels، عايز أعرف أكتر عن خدماتكم.", "Hi Marvels, I would like to know more about your services."))
 
     style = (HOME.get("hero_style") or "navy").strip()
     style = style if style in ("navy", "teal", "light", "orange") else "navy"
@@ -487,31 +479,90 @@ def p_index(lang):
 {cta_band(lang)}'''
     return title, desc, main, ""
 
+# ------------------------------------------------------------------ editable pages (content/pages/*.json)
+SERVICE_PAGES = ("reels", "podcast", "ads", "studio")
+SVC_CONTENT = {}
+for _k in SERVICE_PAGES:
+    try:
+        SVC_CONTENT[_k] = _load(f"pages/{_k}.json")
+    except FileNotFoundError:
+        SVC_CONTENT[_k] = {}
+
+def T(d, key, lang, default=""):
+    """Bilingual field from a content dict (key_ar / key_en), falling back to the other language."""
+    a, e = (d.get(key + "_ar") or "").strip(), (d.get(key + "_en") or "").strip()
+    v = (a or e) if lang == "ar" else (e or a)
+    return v or default
+
+def fill(text):
+    return (text.replace("{trial_price}", money(PRICING.get("trial_price", 0)))
+                .replace("{studio_rate}", money(PRICING.get("studio_rate", 0))))
+
+def cta_btn(lang, d, n, cls, wa_text):
+    label = T(d, f"cta{n}_label", lang)
+    target = (d.get(f"cta{n}_link") or "").strip()
+    if not label or not target:
+        return ""
+    if target == "whatsapp":
+        return f'<a class="btn {cls}" href="#" data-wa="{esc(wa_text)}">{esc(label)}</a>'
+    if target == "studio-book":
+        return f'<a class="btn {cls}" href="{href(lang, "studio")}#book">{esc(label)}</a>'
+    if target.startswith(("http://", "https://")):
+        return f'<a class="btn {cls}" href="{esc(target)}" target="_blank" rel="noopener noreferrer">{esc(label)}</a>'
+    return f'<a class="btn {cls}" href="{href(lang, target)}">{esc(label)}</a>'
+
+def hero_parts(d):
+    style = (d.get("hero_style") or "navy").strip()
+    style = style if style in ("navy", "teal", "light", "orange") else "navy"
+    img = (d.get("hero_image") or "").strip()
+    if img and not img.startswith(("http://", "https://", "/")):
+        img = "/" + img
+    band = "band-navy" if style in ("navy", "teal") else ""
+    return style, img, band
+
+def page_hero(lang, kind, name, d):
+    style, img, band = hero_parts(d)
+    wa = L(lang, f"أهلًا Marvels، عايز أعرف أكتر عن خدمة {SVC_NAMES[kind][0]}.", f"Hi Marvels, I'd like to know more about {SVC_NAMES[kind][1].lower()}.")
+    mark = f'<img class="hero-img" src="{esc(img)}" alt="">' if img else shield(kind)
+    return f'''<section class="{band} hero svc-hero hero-{style}">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="eyebrow" dir="ltr">MARVELS <b>{name}</b></span>
+      <h1>{esc(T(d, "hero_title", lang))}</h1>
+      <p class="lead">{esc(fill(T(d, "hero_lead", lang)))}</p>
+      <div class="hero-actions">{cta_btn(lang, d, 1, "btn-cta", wa)}{cta_btn(lang, d, 2, "btn-ghost", wa)}</div>
+    </div>
+    <div class="hero-mark{" has-img" if img else ""}">{mark}</div>
+  </div>
+</section>'''
+
+def page_features(lang, d):
+    items = [(esc(T(f, "title", lang)), esc(fill(T(f, "text", lang)))) for f in d.get("features", []) if T(f, "title", lang)]
+    head = T(d, "features_title", lang)
+    return (f'<div class="section-head"><h2>{esc(head)}</h2></div>' if head else "") + (checks(items) if items else "")
+
+def page_aside(lang, d, extra=""):
+    parts = []
+    aud = [x for x in (d.get("audience_ar" if lang == "ar" else "audience_en") or d.get("audience_ar") or []) if str(x).strip()]
+    if aud:
+        parts.append(f'<h3>{esc(T(d, "audience_title", lang, L(lang, "مناسب لمين", "Who it is for")))}</h3>{chips([esc(x) for x in aud])}')
+    if T(d, "box_title", lang) or T(d, "box_text", lang):
+        parts.append(f'<h3>{esc(T(d, "box_title", lang))}</h3><p>{esc(fill(T(d, "box_text", lang)))}</p>')
+    if T(d, "note", lang):
+        parts.append(f'<p class="note">{esc(fill(T(d, "note", lang)))}</p>')
+    if extra:
+        parts.append(extra)
+    return f'<aside class="aside-box">{"".join(parts)}</aside>' if parts else ""
+
 def p_reels(lang):
     title = L(lang, "تصوير ومونتاج ريلز للبيزنس في العبور — Marvels", "Reels Production for Businesses in Obour City — Marvels")
     desc = L(lang, f"سكريبت وتصوير ومونتاج ريلز في استوديو Marvels بالعبور، جاهزة للنشر والإعلان. باقات تبدأ من {money(min(p['price'] for p in PRICING['plans']))} جنيه شهريًا.",
              f"Reels scripted, shot and edited at Marvels studio in Obour City, ready to post and promote. Plans from EGP {money(min(p['price'] for p in PRICING['plans']))} a month.")
-    hero = svc_hero(lang, "reels", "REELS", L(lang, "ريلز بتوقّف السكرول وبتجيب رسايل", "Reels that stop the scroll and bring in messages"),
-        L(lang, "من الفكرة للسكريبت للتصوير للمونتاج. بنصوّر ريلز الشهر كله في أيام تصوير ثابتة في الاستوديو، وبنجهزها تشتغل إعلان كمان.", "From idea to script, shoot and edit. We film the whole month's reels on fixed studio days and prepare them for ads too."),
-        f'<a class="btn btn-cta" href="{href(lang, "pricing")}">{L(lang, "شوف الباقات", "See plans")}</a><a class="btn btn-ghost" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أعرف عن خدمة الريلز.", "Hi Marvels, I want to know about your reels service."))}">{L(lang, "اسأل على واتساب", "Ask on WhatsApp")}</a>')
-    main = hero + f'''<section>
+    d = SVC_CONTENT["reels"]
+    main = page_hero(lang, "reels", "REELS", d) + f'''<section>
   <div class="wrap two-col">
-    <div>
-      <div class="section-head"><h2>{L(lang, "بنعمل إيه بالظبط", "What we do")}</h2></div>
-      {checks([
-        (L(lang, "سكريبت مبني على جمهورك", "Scripts built on your audience"), L(lang, "كل ريل ليه فكرة وهدف واضح: يعرّف الناس بيك، أو يبني ثقة، أو يبيع. والسكريبت بيوصلك تراجعه قبل التصوير.", "Every reel has a purpose: awareness, trust or a sale. You review the script before we shoot.")),
-        (L(lang, "أيام تصوير ثابتة كل شهر", "Fixed shoot days every month"), L(lang, "بنصوّر محتوى الشهر كله مرة واحدة في الاستوديو أو في مكانك، فوقتك مش بيضيع كل أسبوع.", "We film the whole month in one go, in our studio or at your place, so you don't lose time every week.")),
-        (L(lang, "مونتاج بإيقاع سريع وكابشن", "Fast-paced edits with captions"), L(lang, "أول 3 ثواني معمولة عشان توقّف السكرول، والكلام مكتوب على الشاشة لأن أغلب الناس بتتفرج من غير صوت.", "The first three seconds are built to stop the scroll, with on-screen text because most people watch on mute.")),
-        (L(lang, "جاهزة للإعلان", "Ready for ads"), L(lang, "بنجهز نسخ من الريلز للإعلان الممول، ونختبر أكتر من بداية عشان نعرف أنهي واحدة بتجيب رسايل أرخص.", "We prepare ad versions and test several openings to find the one with the cheapest messages.")),
-      ])}
-    </div>
-    <aside class="aside-box">
-      <h3>{L(lang, "مناسب لمين", "Who it's for")}</h3>
-      {chips(L(lang, ["عيادات ومراكز طبية", "مطاعم وكافيهات", "عقارات ومطورين", "جيمات وبيوتي", "مدارس وسناتر", "براند شخصي"], ["Clinics and medical centres", "Restaurants and cafés", "Real estate", "Gyms and beauty", "Schools and tutoring", "Personal brands"]))}
-      <h3>{L(lang, "عايز تجرّب الأول؟", "Want to try first?")}</h3>
-      <p>{L(lang, f"4 ريلز بالتصوير والمونتاج بـ{money(PRICING["trial_price"])} جنيه، وقيمتها تتخصم من أول شهر لو اشتركت في باقة خلال 30 يوم.", f"4 reels shot and edited for EGP {money(PRICING["trial_price"])}, credited to your first month if you join a plan within 30 days.")}</p>
-      <p class="note">{L(lang, "المحتوى الطبي بنراجعه على ضوابط نقابة الأطباء ووزارة الصحة قبل النشر.", "Medical content is checked against Egyptian Medical Syndicate and Ministry of Health rules before publishing.")}</p>
-    </aside>
+    <div>{page_features(lang, d)}</div>
+    {page_aside(lang, d)}
   </div>
 </section>
 <section class="band-surface">
@@ -527,26 +578,11 @@ def p_podcast(lang):
     title = L(lang, "استوديو بودكاست وتسجيل حلقات في العبور — Marvels", "Podcast Studio & Production in Obour City — Marvels")
     desc = L(lang, "سجّل البودكاست بتاعك في استوديو Marvels بالعبور: 2–3 كاميرات، مونتاج، وريلز مقصوصة من كل حلقة.",
              "Record your podcast at Marvels studio in Obour City: 2–3 cameras, editing and reels cut from every episode.")
-    hero = svc_hero(lang, "podcast", "PODCAST", L(lang, "بودكاست بصوت وصورة احترافية", "A podcast that looks and sounds professional"),
-        L(lang, "إنت عليك الكلام، وإحنا علينا الكاميرات والصوت والمونتاج والكليبات والنشر. وكل حلقة بيطلع منها ريلز تنشرها طول الأسبوع.", "You bring the conversation; we handle cameras, sound, editing, clips and publishing. Every episode becomes a week of reels."),
-        f'<a class="btn btn-cta" href="{href(lang, "studio")}#book">{L(lang, "احجز ميعاد تسجيل", "Book a recording")}</a><a class="btn btn-ghost" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أسجّل بودكاست.", "Hi Marvels, I want to record a podcast."))}">{L(lang, "اسأل على واتساب", "Ask on WhatsApp")}</a>')
-    main = hero + f'''<section>
+    d = SVC_CONTENT["podcast"]
+    main = page_hero(lang, "podcast", "PODCAST", d) + f'''<section>
   <div class="wrap two-col">
-    <div>
-      <div class="section-head"><h2>{L(lang, "الحلقة بتشمل إيه", "What every episode includes")}</h2></div>
-      {checks([
-        (L(lang, "تسجيل بـ2–3 كاميرات", "2–3 camera recording"), L(lang, "زوايا متعددة وصوت استوديو، ومشغّل موجود معاك طول التسجيل.", "Multiple angles, studio sound and an operator with you throughout.")),
-        (L(lang, "مونتاج الحلقة كاملة", "Full episode edit"), L(lang, "قص، تلوين، صوت نضيف، ومقدمة ونهاية بهويتك.", "Cutting, colour, clean audio and a branded intro and outro.")),
-        (L(lang, "3 ريلز من كل حلقة", "3 reels per episode"), L(lang, "أقوى اللحظات متقطعة عموديًا بالكابشن وجاهزة للنشر.", "The strongest moments cut vertically with captions, ready to post.")),
-        (L(lang, "نشر على يوتيوب والسوشيال", "Publishing to YouTube and social"), L(lang, "في الباقة الشهرية: رفع الحلقات والكليبات بعناوين ووصف مظبوطين.", "In the monthly plan: episodes and clips uploaded with proper titles and descriptions.")),
-      ])}
-    </div>
-    <aside class="aside-box">
-      <h3>{L(lang, "مناسب لمين", "Who it's for")}</h3>
-      {chips(L(lang, ["كوتشز ومدربين", "دكاترة", "رواد أعمال", "شركات بتبني ثقة", "صناع محتوى"], ["Coaches and trainers", "Doctors", "Founders", "Companies building trust", "Creators"]))}
-      <h3>{L(lang, "عرض الافتتاح", "Opening offer")}</h3>
-      <p>{L(lang, "الحلقة الأولى مجانًا لأي حد يشترك في باقة البودكاست الشهرية في شهر الافتتاح.", "Your first episode is free when you join the monthly podcast plan during our opening month.")}</p>
-    </aside>
+    <div>{page_features(lang, d)}</div>
+    {page_aside(lang, d)}
   </div>
 </section>
 <section class="band-surface">
@@ -562,26 +598,12 @@ def p_ads(lang):
     title = L(lang, "إدارة إعلانات ممولة فيسبوك وإنستجرام وتيك توك — Marvels", "Paid Ads Management: Meta & TikTok — Marvels")
     desc = L(lang, "إدارة إعلانات ممولة على ميتا وتيك توك من Marvels بالعبور: استهداف، تجهيز إعلانات، متابعة يومية، وتقرير بالأرقام.",
              "Paid ads on Meta and TikTok managed by Marvels in Obour City: targeting, ad creative, daily optimisation and a monthly report.")
-    hero = svc_hero(lang, "ads", "ADS", L(lang, "إعلانات مبنية على الأرقام", "Ads built on numbers"),
-        L(lang, "بنخطط ونطلق ونتابع حملاتك على فيسبوك وإنستجرام وتيك توك، والهدف واضح: رسايل وحجوزات ومبيعات، مش لايكات.", "We plan, launch and optimise your campaigns on Facebook, Instagram and TikTok with a clear goal: messages, bookings and sales, not likes."),
-        f'<a class="btn btn-cta" href="{href(lang, "audit")}">{L(lang, "راجع إعلاناتك مجانًا", "Get a free ads review")}</a><a class="btn btn-ghost" href="{href(lang, "pricing")}">{L(lang, "شوف الباقات", "See pricing")}</a>')
-    main = hero + f'''<section>
+    d = SVC_CONTENT["ads"]
+    quote = f'<a class="btn btn-line" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز عرض سعر لإدارة الإعلانات.", "Hi Marvels, I would like a quote for ads management."))}">{L(lang, "اطلب عرض سعر", "Request a quote")}</a>'
+    main = page_hero(lang, "ads", "ADS", d) + f'''<section>
   <div class="wrap two-col">
-    <div>
-      <div class="section-head"><h2>{L(lang, "بنشتغل إزاي على إعلاناتك", "How we run your ads")}</h2></div>
-      {checks([
-        (L(lang, "هدف ورقم قبل أي جنيه", "A goal and a target before any spend"), L(lang, "بنحدد مع بعض: عايزين رسايل ولا حجوزات ولا مبيعات، وأقصى تكلفة مقبولة للعميل.", "We agree on messages, bookings or sales, and the most a customer can cost.")),
-        (L(lang, "إعلانات من محتوى بيتصوّر عندنا", "Ads made from content we shoot"), L(lang, "مش بوستات متصممة وخلاص. فيديوهات حقيقية بتتصوّر مخصوص عشان تبيع.", "Not just designed posts: real videos shot specifically to sell.")),
-        (L(lang, "متابعة يومية وتحسين", "Daily monitoring and optimisation"), L(lang, "بنوقف اللي مش شغال ونزوّد على اللي بيجيب نتيجة، كل يوم.", "We pause what doesn't work and scale what does, every day.")),
-        (L(lang, "تقرير شهري واضح", "A clear monthly report"), L(lang, "تكلفة الرسالة، عدد العملاء، وأحسن إعلان، من غير أرقام تجميلية.", "Cost per message, customer count and the best ad, with no vanity metrics.")),
-      ])}
-    </div>
-    <aside class="aside-box">
-      <h3>{L(lang, "التسعير", "Pricing")}</h3>
-      <p>{L(lang, "إدارة الإعلانات داخلة في الباقات الثلاثة: بميزانية حتى 15,000 ج في Start، وحتى 30,000 ج في Grow، ومفتوحة في Pro. لو عايز إدارة إعلانات بس من غير محتوى، كلمنا ونعملك عرض سعر حسب حجم حملاتك.", "Ads management is included in all three plans: budgets up to EGP 15,000 on Start, up to EGP 30,000 on Grow, and open on Pro. For ads management without content, contact us for a quote based on your campaign size.")}</p>
-      <p class="note">{L(lang, "ميزانية الإعلان نفسها بتتدفع للمنصة مباشرة من حسابك، ومش جزء من سعر الباقة.", "Ad spend is paid directly to the platform from your account and is not part of the plan price.")}</p>
-      <a class="btn btn-line" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز عرض سعر لإدارة الإعلانات.", "Hi Marvels, I'd like a quote for ads management."))}">{L(lang, "اطلب عرض سعر", "Request a quote")}</a>
-    </aside>
+    <div>{page_features(lang, d)}</div>
+    {page_aside(lang, d, quote)}
   </div>
 </section>
 {cta_band(lang)}'''
@@ -592,21 +614,14 @@ def p_studio(lang):
     title = L(lang, "استوديو للإيجار في العبور — Marvels", "Studio Rental in Obour — Marvels")
     desc = L(lang, f"استوديو Marvels في العبور للإيجار بالساعة: ركن بودكاست وركن ريلز. {rate} جنيه للساعة. احجز ميعادك على واتساب.",
              f"Rent Marvels studio in Obour City by the hour: a podcast set and a reels set. EGP {rate} per hour. Book on WhatsApp.")
-    hero = svc_hero(lang, "studio", "STUDIO", L(lang, "استوديو مجهز في العبور", "A ready-to-shoot studio in Obour"),
-        L(lang, "للكرييتورز والمصورين والبراندات: ركن بودكاست وركن ريلز، بالإضاءة والصوت، ومشغّل موجود معاك.", "For creators, photographers and brands: a podcast set and a reels set with lighting and sound, plus an operator on site."),
-        f'<a class="btn btn-cta" href="#book">{L(lang, "احجز ساعات", "Book hours")}</a><a class="btn btn-ghost" href="#" data-wa="{esc(L(lang, "أهلًا Marvels، عايز أسأل عن إيجار الاستوديو.", "Hi Marvels, I have a question about renting the studio."))}">{L(lang, "اسأل على واتساب", "Ask on WhatsApp")}</a>')
+    d = SVC_CONTENT["studio"]
+    hero = page_hero(lang, "studio", "STUDIO", d)
     hours_opts = "".join(f'<option value="{h}"{" selected" if h == 2 else ""}>{h} {L(lang, "ساعة" if h in (1,) else ("ساعتين" if h == 2 else "ساعات"), "hour" if h == 1 else "hours")}</option>' for h in range(1, 9))
     hours_opts = hours_opts.replace(f'>2 {L(lang, "ساعتين", "hours")}<', f'>{L(lang, "ساعتين", "2 hours")}<')
     main = hero + f'''<section>
   <div class="wrap two-col">
     <div>
-      <div class="section-head"><h2>{L(lang, "في الاستوديو", "In the studio")}</h2></div>
-      {checks([
-        (L(lang, "ركن بودكاست", "Podcast set"), L(lang, "طاولة وكراسي للضيوف، مايكات وكاميرات متظبطة.", "A table and seats for guests, with mics and cameras set up.")),
-        (L(lang, "ركن ريلز", "Reels set"), L(lang, "خلفيات وإضاءة جاهزة للتصوير العمودي.", "Backdrops and lighting ready for vertical video.")),
-        (L(lang, "مشغّل استوديو", "Studio operator"), L(lang, "حد من فريقنا موجود معاك يظبط الإضاءة والصوت.", "Someone from our team on hand for lighting and sound.")),
-        (L(lang, "مونتاج لو محتاجه", "Editing if you need it"), L(lang, "الإيجار من غير مونتاج، ولو عايز مونتاج نضيفه بسعر منفصل.", "Rental doesn't include editing; we can add it at a separate price.")),
-      ])}
+      {page_features(lang, d)}
     </div>
     <aside class="aside-box">
       <h3>{L(lang, "السعر", "Price")}</h3>

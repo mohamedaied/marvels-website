@@ -1,0 +1,64 @@
+{
+  "hero_style": "navy",
+  "hero_image": "",
+  "hero_title_ar": "بودكاست بصورة وصوت استوديو",
+  "hero_title_en": "A podcast that looks and sounds professional",
+  "hero_lead_ar": "إنت عليك الكلام، وإحنا علينا الكاميرات والصوت والمونتاج والنشر. وكل حلقة بتطلّعلك ريلز تنشرها طول الأسبوع.",
+  "hero_lead_en": "You bring the conversation; we handle cameras, sound, editing and publishing. Every episode becomes a week of reels.",
+  "cta1_label_ar": "احجز ميعاد تسجيل",
+  "cta1_label_en": "Book a recording",
+  "cta1_link": "studio-book",
+  "cta2_label_ar": "اسأل على واتساب",
+  "cta2_label_en": "Ask on WhatsApp",
+  "cta2_link": "whatsapp",
+  "features_title_ar": "الحلقة فيها إيه",
+  "features_title_en": "What every episode includes",
+  "features": [
+    {
+      "title_ar": "تسجيل بـ2 لـ3 كاميرات",
+      "title_en": "2–3 camera recording",
+      "text_ar": "زوايا متعددة وصوت استوديو، وحد من فريقنا معاك طول التسجيل.",
+      "text_en": "Multiple angles, studio sound and someone from our team with you throughout."
+    },
+    {
+      "title_ar": "مونتاج الحلقة كاملة",
+      "title_en": "Full episode edit",
+      "text_ar": "قص وتلوين وصوت نضيف، ومقدمة ونهاية بهوية البراند بتاعك.",
+      "text_en": "Cutting, colour, clean audio and a branded intro and outro."
+    },
+    {
+      "title_ar": "3 ريلز من كل حلقة",
+      "title_en": "3 reels per episode",
+      "text_ar": "أقوى اللحظات متقطعة طولي بالكابشن وجاهزة للنشر.",
+      "text_en": "The strongest moments cut vertically with captions, ready to post."
+    },
+    {
+      "title_ar": "نشر على يوتيوب والسوشيال",
+      "title_en": "Publishing to YouTube and social",
+      "text_ar": "في الباقة الشهرية بنرفع الحلقات والكليبات بعناوين ووصف مظبوطين.",
+      "text_en": "In the monthly plan we upload episodes and clips with proper titles and descriptions."
+    }
+  ],
+  "audience_title_ar": "مناسب لمين",
+  "audience_title_en": "Who it's for",
+  "audience_ar": [
+    "كوتشز ومدربين",
+    "دكاترة",
+    "رواد أعمال",
+    "شركات بتبني ثقة",
+    "صناع محتوى"
+  ],
+  "audience_en": [
+    "Coaches and trainers",
+    "Doctors",
+    "Founders",
+    "Companies building trust",
+    "Creators"
+  ],
+  "box_title_ar": "عرض الافتتاح",
+  "box_title_en": "Opening offer",
+  "box_text_ar": "الحلقة الأولى مجانًا لأي حد يشترك في باقة البودكاست الشهرية في شهر الافتتاح.",
+  "box_text_en": "Your first episode is free when you join the monthly podcast plan during our opening month.",
+  "note_ar": "",
+  "note_en": ""
+}

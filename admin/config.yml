@@ -57,6 +57,326 @@ collections:
         buttons: [bold, link, heading-two, heading-three, bulleted-list, numbered-list]
         editor_components: [image]
 
+  # ------------------------------------------------------------ صفحات الخدمات
+  - name: services
+    label: "صفحات الخدمات"
+    editor:
+      preview: false
+    files:
+      - name: reels
+        label: "صفحة الريلز"
+        file: content/pages/reels.json
+        format: json
+        fields:
+          - label: "شكل الهيدر"
+            name: hero_style
+            widget: select
+            default: navy
+            options:
+              - { label: "كحلي (الأساسي)", value: navy }
+              - { label: "تيل", value: teal }
+              - { label: "فاتح", value: light }
+              - { label: "برتقالي", value: orange }
+          - { label: "صورة الهيدر", name: hero_image, widget: image, required: false, hint: "اختياري. لو رفعت صورة هتظهر مكان أيقونة الخدمة" }
+          - { label: "العنوان الكبير (عربي)", name: hero_title_ar, widget: string }
+          - { label: "العنوان الكبير (English)", name: hero_title_en, widget: string, required: false }
+          - { label: "الكلام تحت العنوان (عربي)", name: hero_lead_ar, widget: text, required: false }
+          - { label: "الكلام تحت العنوان (English)", name: hero_lead_en, widget: text, required: false }
+          - { label: "الزرار الأول (عربي)", name: cta1_label_ar, widget: string, required: false }
+          - { label: "الزرار الأول (English)", name: cta1_label_en, widget: string, required: false }
+          - label: "الزرار الأول بيودّي على"
+            name: cta1_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "الزرار التاني (عربي)", name: cta2_label_ar, widget: string, required: false, hint: "سيبه فاضي لو مش عايز زرار تاني" }
+          - { label: "الزرار التاني (English)", name: cta2_label_en, widget: string, required: false }
+          - label: "الزرار التاني بيودّي على"
+            name: cta2_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "عنوان قسم المحتوى (عربي)", name: features_title_ar, widget: string, required: false }
+          - { label: "عنوان قسم المحتوى (English)", name: features_title_en, widget: string, required: false }
+          - label: "النقاط"
+            name: features
+            widget: list
+            summary: "{{fields.title_ar}}"
+            fields:
+              - { label: "العنوان (عربي)", name: title_ar, widget: string }
+              - { label: "العنوان (English)", name: title_en, widget: string, required: false }
+              - { label: "الشرح (عربي)", name: text_ar, widget: text }
+              - { label: "الشرح (English)", name: text_en, widget: text, required: false }
+          - { label: "عنوان مناسب لمين (عربي)", name: audience_title_ar, widget: string, required: false }
+          - { label: "عنوان مناسب لمين (English)", name: audience_title_en, widget: string, required: false }
+          - label: "مناسب لمين (عربي)"
+            name: audience_ar
+            widget: list
+            required: false
+            field: { label: "مجال", name: item, widget: string }
+          - label: "مناسب لمين (English)"
+            name: audience_en
+            widget: list
+            required: false
+            field: { label: "Field", name: item, widget: string }
+          - { label: "عنوان البوكس الجانبي (عربي)", name: box_title_ar, widget: string, required: false }
+          - { label: "عنوان البوكس الجانبي (English)", name: box_title_en, widget: string, required: false }
+          - { label: "كلام البوكس الجانبي (عربي)", name: box_text_ar, widget: text, required: false, hint: "اكتب {trial_price} عشان يظهر سعر التجربة، أو {studio_rate} لسعر ساعة الاستوديو" }
+          - { label: "كلام البوكس الجانبي (English)", name: box_text_en, widget: text, required: false }
+          - { label: "ملاحظة صغيرة (عربي)", name: note_ar, widget: string, required: false }
+          - { label: "ملاحظة صغيرة (English)", name: note_en, widget: string, required: false }
+
+      - name: podcast
+        label: "صفحة البودكاست"
+        file: content/pages/podcast.json
+        format: json
+        fields:
+          - label: "شكل الهيدر"
+            name: hero_style
+            widget: select
+            default: navy
+            options:
+              - { label: "كحلي (الأساسي)", value: navy }
+              - { label: "تيل", value: teal }
+              - { label: "فاتح", value: light }
+              - { label: "برتقالي", value: orange }
+          - { label: "صورة الهيدر", name: hero_image, widget: image, required: false, hint: "اختياري. لو رفعت صورة هتظهر مكان أيقونة الخدمة" }
+          - { label: "العنوان الكبير (عربي)", name: hero_title_ar, widget: string }
+          - { label: "العنوان الكبير (English)", name: hero_title_en, widget: string, required: false }
+          - { label: "الكلام تحت العنوان (عربي)", name: hero_lead_ar, widget: text, required: false }
+          - { label: "الكلام تحت العنوان (English)", name: hero_lead_en, widget: text, required: false }
+          - { label: "الزرار الأول (عربي)", name: cta1_label_ar, widget: string, required: false }
+          - { label: "الزرار الأول (English)", name: cta1_label_en, widget: string, required: false }
+          - label: "الزرار الأول بيودّي على"
+            name: cta1_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "الزرار التاني (عربي)", name: cta2_label_ar, widget: string, required: false, hint: "سيبه فاضي لو مش عايز زرار تاني" }
+          - { label: "الزرار التاني (English)", name: cta2_label_en, widget: string, required: false }
+          - label: "الزرار التاني بيودّي على"
+            name: cta2_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "عنوان قسم المحتوى (عربي)", name: features_title_ar, widget: string, required: false }
+          - { label: "عنوان قسم المحتوى (English)", name: features_title_en, widget: string, required: false }
+          - label: "النقاط"
+            name: features
+            widget: list
+            summary: "{{fields.title_ar}}"
+            fields:
+              - { label: "العنوان (عربي)", name: title_ar, widget: string }
+              - { label: "العنوان (English)", name: title_en, widget: string, required: false }
+              - { label: "الشرح (عربي)", name: text_ar, widget: text }
+              - { label: "الشرح (English)", name: text_en, widget: text, required: false }
+          - { label: "عنوان مناسب لمين (عربي)", name: audience_title_ar, widget: string, required: false }
+          - { label: "عنوان مناسب لمين (English)", name: audience_title_en, widget: string, required: false }
+          - label: "مناسب لمين (عربي)"
+            name: audience_ar
+            widget: list
+            required: false
+            field: { label: "مجال", name: item, widget: string }
+          - label: "مناسب لمين (English)"
+            name: audience_en
+            widget: list
+            required: false
+            field: { label: "Field", name: item, widget: string }
+          - { label: "عنوان البوكس الجانبي (عربي)", name: box_title_ar, widget: string, required: false }
+          - { label: "عنوان البوكس الجانبي (English)", name: box_title_en, widget: string, required: false }
+          - { label: "كلام البوكس الجانبي (عربي)", name: box_text_ar, widget: text, required: false, hint: "اكتب {trial_price} عشان يظهر سعر التجربة، أو {studio_rate} لسعر ساعة الاستوديو" }
+          - { label: "كلام البوكس الجانبي (English)", name: box_text_en, widget: text, required: false }
+          - { label: "ملاحظة صغيرة (عربي)", name: note_ar, widget: string, required: false }
+          - { label: "ملاحظة صغيرة (English)", name: note_en, widget: string, required: false }
+
+      - name: ads
+        label: "صفحة الإعلانات"
+        file: content/pages/ads.json
+        format: json
+        fields:
+          - label: "شكل الهيدر"
+            name: hero_style
+            widget: select
+            default: navy
+            options:
+              - { label: "كحلي (الأساسي)", value: navy }
+              - { label: "تيل", value: teal }
+              - { label: "فاتح", value: light }
+              - { label: "برتقالي", value: orange }
+          - { label: "صورة الهيدر", name: hero_image, widget: image, required: false, hint: "اختياري. لو رفعت صورة هتظهر مكان أيقونة الخدمة" }
+          - { label: "العنوان الكبير (عربي)", name: hero_title_ar, widget: string }
+          - { label: "العنوان الكبير (English)", name: hero_title_en, widget: string, required: false }
+          - { label: "الكلام تحت العنوان (عربي)", name: hero_lead_ar, widget: text, required: false }
+          - { label: "الكلام تحت العنوان (English)", name: hero_lead_en, widget: text, required: false }
+          - { label: "الزرار الأول (عربي)", name: cta1_label_ar, widget: string, required: false }
+          - { label: "الزرار الأول (English)", name: cta1_label_en, widget: string, required: false }
+          - label: "الزرار الأول بيودّي على"
+            name: cta1_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "الزرار التاني (عربي)", name: cta2_label_ar, widget: string, required: false, hint: "سيبه فاضي لو مش عايز زرار تاني" }
+          - { label: "الزرار التاني (English)", name: cta2_label_en, widget: string, required: false }
+          - label: "الزرار التاني بيودّي على"
+            name: cta2_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "عنوان قسم المحتوى (عربي)", name: features_title_ar, widget: string, required: false }
+          - { label: "عنوان قسم المحتوى (English)", name: features_title_en, widget: string, required: false }
+          - label: "النقاط"
+            name: features
+            widget: list
+            summary: "{{fields.title_ar}}"
+            fields:
+              - { label: "العنوان (عربي)", name: title_ar, widget: string }
+              - { label: "العنوان (English)", name: title_en, widget: string, required: false }
+              - { label: "الشرح (عربي)", name: text_ar, widget: text }
+              - { label: "الشرح (English)", name: text_en, widget: text, required: false }
+          - { label: "عنوان مناسب لمين (عربي)", name: audience_title_ar, widget: string, required: false }
+          - { label: "عنوان مناسب لمين (English)", name: audience_title_en, widget: string, required: false }
+          - label: "مناسب لمين (عربي)"
+            name: audience_ar
+            widget: list
+            required: false
+            field: { label: "مجال", name: item, widget: string }
+          - label: "مناسب لمين (English)"
+            name: audience_en
+            widget: list
+            required: false
+            field: { label: "Field", name: item, widget: string }
+          - { label: "عنوان البوكس الجانبي (عربي)", name: box_title_ar, widget: string, required: false }
+          - { label: "عنوان البوكس الجانبي (English)", name: box_title_en, widget: string, required: false }
+          - { label: "كلام البوكس الجانبي (عربي)", name: box_text_ar, widget: text, required: false, hint: "اكتب {trial_price} عشان يظهر سعر التجربة، أو {studio_rate} لسعر ساعة الاستوديو" }
+          - { label: "كلام البوكس الجانبي (English)", name: box_text_en, widget: text, required: false }
+          - { label: "ملاحظة صغيرة (عربي)", name: note_ar, widget: string, required: false }
+          - { label: "ملاحظة صغيرة (English)", name: note_en, widget: string, required: false }
+
+      - name: studio
+        label: "صفحة الاستوديو"
+        file: content/pages/studio.json
+        format: json
+        fields:
+          - label: "شكل الهيدر"
+            name: hero_style
+            widget: select
+            default: navy
+            options:
+              - { label: "كحلي (الأساسي)", value: navy }
+              - { label: "تيل", value: teal }
+              - { label: "فاتح", value: light }
+              - { label: "برتقالي", value: orange }
+          - { label: "صورة الهيدر", name: hero_image, widget: image, required: false, hint: "اختياري. لو رفعت صورة هتظهر مكان أيقونة الخدمة" }
+          - { label: "العنوان الكبير (عربي)", name: hero_title_ar, widget: string }
+          - { label: "العنوان الكبير (English)", name: hero_title_en, widget: string, required: false }
+          - { label: "الكلام تحت العنوان (عربي)", name: hero_lead_ar, widget: text, required: false }
+          - { label: "الكلام تحت العنوان (English)", name: hero_lead_en, widget: text, required: false }
+          - { label: "الزرار الأول (عربي)", name: cta1_label_ar, widget: string, required: false }
+          - { label: "الزرار الأول (English)", name: cta1_label_en, widget: string, required: false }
+          - label: "الزرار الأول بيودّي على"
+            name: cta1_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "الزرار التاني (عربي)", name: cta2_label_ar, widget: string, required: false, hint: "سيبه فاضي لو مش عايز زرار تاني" }
+          - { label: "الزرار التاني (English)", name: cta2_label_en, widget: string, required: false }
+          - label: "الزرار التاني بيودّي على"
+            name: cta2_link
+            widget: select
+            required: false
+            options:
+              - { label: "صفحة Audit مجاني", value: audit }
+              - { label: "صفحة الأسعار", value: pricing }
+              - { label: "واتساب", value: whatsapp }
+              - { label: "حجز الاستوديو", value: studio-book }
+              - { label: "صفحة الريلز", value: reels }
+              - { label: "صفحة البودكاست", value: podcast }
+              - { label: "صفحة الإعلانات", value: ads }
+              - { label: "صفحة الاستوديو", value: studio }
+              - { label: "صفحة خبراتنا", value: experience }
+              - { label: "صفحة المقالات", value: blog }
+          - { label: "عنوان قسم المحتوى (عربي)", name: features_title_ar, widget: string, required: false }
+          - { label: "عنوان قسم المحتوى (English)", name: features_title_en, widget: string, required: false }
+          - label: "النقاط"
+            name: features
+            widget: list
+            summary: "{{fields.title_ar}}"
+            fields:
+              - { label: "العنوان (عربي)", name: title_ar, widget: string }
+              - { label: "العنوان (English)", name: title_en, widget: string, required: false }
+              - { label: "الشرح (عربي)", name: text_ar, widget: text }
+              - { label: "الشرح (English)", name: text_en, widget: text, required: false }
+
   # ------------------------------------------------------------ بيانات الموقع
   - name: site
     label: "بيانات الموقع"

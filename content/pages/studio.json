@@ -1,0 +1,52 @@
+{
+  "hero_style": "navy",
+  "hero_image": "",
+  "hero_title_ar": "استوديو جاهز للتصوير في العبور",
+  "hero_title_en": "A ready-to-shoot studio in Obour",
+  "hero_lead_ar": "للكرييتورز والمصورين والبراندات: ركن بودكاست وركن ريلز بالإضاءة والصوت، وحد من فريقنا موجود معاك.",
+  "hero_lead_en": "For creators, photographers and brands: a podcast set and a reels set with lighting and sound, plus someone from our team on site.",
+  "cta1_label_ar": "احجز ساعات",
+  "cta1_label_en": "Book hours",
+  "cta1_link": "studio-book",
+  "cta2_label_ar": "اسأل على واتساب",
+  "cta2_label_en": "Ask on WhatsApp",
+  "cta2_link": "whatsapp",
+  "features_title_ar": "في الاستوديو",
+  "features_title_en": "In the studio",
+  "features": [
+    {
+      "title_ar": "ركن بودكاست",
+      "title_en": "Podcast set",
+      "text_ar": "طاولة وكراسي للضيوف، ومايكات وكاميرات متظبطة.",
+      "text_en": "A table and seats for guests, with mics and cameras set up."
+    },
+    {
+      "title_ar": "ركن ريلز",
+      "title_en": "Reels set",
+      "text_ar": "خلفيات وإضاءة جاهزة للتصوير الطولي.",
+      "text_en": "Backdrops and lighting ready for vertical video."
+    },
+    {
+      "title_ar": "حد من فريقنا معاك",
+      "title_en": "Someone from our team",
+      "text_ar": "بيظبطلك الإضاءة والصوت عشان تركّز في التصوير.",
+      "text_en": "Sets up lighting and sound so you can focus on the shoot."
+    },
+    {
+      "title_ar": "مونتاج لو محتاجه",
+      "title_en": "Editing if you need it",
+      "text_ar": "الإيجار من غير مونتاج، ولو عايز مونتاج بنضيفه بسعر منفصل.",
+      "text_en": "Rental doesn't include editing; we can add it at a separate price."
+    }
+  ],
+  "audience_title_ar": "",
+  "audience_title_en": "",
+  "audience_ar": [],
+  "audience_en": [],
+  "box_title_ar": "",
+  "box_title_en": "",
+  "box_text_ar": "",
+  "box_text_en": "",
+  "note_ar": "",
+  "note_en": ""
+}

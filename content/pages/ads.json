@@ -1,0 +1,52 @@
+{
+  "hero_style": "navy",
+  "hero_image": "",
+  "hero_title_ar": "إعلانات بتتقاس بالعملاء، مش باللايكات",
+  "hero_title_en": "Ads measured in customers, not likes",
+  "hero_lead_ar": "بنخطط ونشغّل ونتابع حملاتك على فيسبوك وإنستجرام وتيك توك، وهدفنا واضح: رسايل وحجوزات ومبيعات.",
+  "hero_lead_en": "We plan, launch and optimise your campaigns on Facebook, Instagram and TikTok with a clear goal: messages, bookings and sales.",
+  "cta1_label_ar": "راجع إعلاناتك مجانًا",
+  "cta1_label_en": "Get a free ads review",
+  "cta1_link": "audit",
+  "cta2_label_ar": "شوف الباقات",
+  "cta2_label_en": "See plans",
+  "cta2_link": "pricing",
+  "features_title_ar": "بنشتغل إزاي على إعلاناتك",
+  "features_title_en": "How we run your ads",
+  "features": [
+    {
+      "title_ar": "هدف ورقم قبل أي جنيه",
+      "title_en": "A goal and a number before any spend",
+      "text_ar": "بنتفق مع بعض: عايزين رسايل ولا حجوزات ولا مبيعات، وأقصى تكلفة مقبولة للعميل الواحد.",
+      "text_en": "We agree on messages, bookings or sales, and the most a single customer can cost."
+    },
+    {
+      "title_ar": "إعلانات من محتوى بنصوّره",
+      "title_en": "Ads made from content we shoot",
+      "text_ar": "مش بوستات متصممة وخلاص. فيديوهات حقيقية بتتصوّر مخصوص عشان تبيع.",
+      "text_en": "Not just designed posts: real videos shot specifically to sell."
+    },
+    {
+      "title_ar": "متابعة وتحسين كل يوم",
+      "title_en": "Daily monitoring and optimisation",
+      "text_ar": "بنوقف اللي مش جايب نتيجة، ونزوّد الميزانية على اللي شغال.",
+      "text_en": "We pause what isn't working and move budget to what is."
+    },
+    {
+      "title_ar": "تقرير شهري واضح",
+      "title_en": "A clear monthly report",
+      "text_ar": "تكلفة الرسالة، وعدد العملاء، وأحسن إعلان، من غير أرقام تجميلية.",
+      "text_en": "Cost per message, customer count and the best ad, with no vanity metrics."
+    }
+  ],
+  "audience_title_ar": "",
+  "audience_title_en": "",
+  "audience_ar": [],
+  "audience_en": [],
+  "box_title_ar": "التسعير",
+  "box_title_en": "Pricing",
+  "box_text_ar": "إدارة الإعلانات داخلة في الباقات الثلاثة: بميزانية حتى 15,000 ج في Start، وحتى 30,000 ج في Grow، ومفتوحة في Pro. ولو عايز إدارة إعلانات بس من غير محتوى، كلمنا ونعملك عرض سعر حسب حجم حملاتك.",
+  "box_text_en": "Ads management is included in all three plans: budgets up to EGP 15,000 on Start, up to EGP 30,000 on Grow, and open on Pro. For ads management without content, contact us for a quote based on your campaign size.",
+  "note_ar": "ميزانية الإعلان نفسها بتتدفع للمنصة مباشرة من حسابك، ومش جزء من سعر الباقة.",
+  "note_en": "Ad spend is paid directly to the platform from your account and is not part of the plan price."
+}

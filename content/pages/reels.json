@@ -1,0 +1,66 @@
+{
+  "hero_style": "navy",
+  "hero_image": "",
+  "hero_title_ar": "ريلز بتوقّف السكرول وبتجيب رسايل",
+  "hero_title_en": "Reels that stop the scroll and bring in messages",
+  "hero_lead_ar": "من الفكرة للسكريبت للتصوير للمونتاج. بنصوّر ريلز الشهر كله في أيام تصوير ثابتة في الاستوديو، وبنجهزها تشتغل إعلان كمان.",
+  "hero_lead_en": "From idea to script, shoot and edit. We film the whole month's reels on fixed studio days and prepare them for ads too.",
+  "cta1_label_ar": "شوف الباقات",
+  "cta1_label_en": "See plans",
+  "cta1_link": "pricing",
+  "cta2_label_ar": "اسأل على واتساب",
+  "cta2_label_en": "Ask on WhatsApp",
+  "cta2_link": "whatsapp",
+  "features_title_ar": "بنعمل إيه بالظبط",
+  "features_title_en": "What we do",
+  "features": [
+    {
+      "title_ar": "سكريبت مبني على جمهورك",
+      "title_en": "Scripts built on your audience",
+      "text_ar": "كل ريل ليه فكرة وهدف واضح: يعرّف الناس بيك، أو يبني ثقة، أو يبيع. والسكريبت بيوصلك تراجعه قبل التصوير.",
+      "text_en": "Every reel has a clear purpose: introduce you, build trust or sell. You review the script before we shoot."
+    },
+    {
+      "title_ar": "أيام تصوير ثابتة كل شهر",
+      "title_en": "Fixed shoot days every month",
+      "text_ar": "بنصوّر محتوى الشهر كله مرة واحدة في الاستوديو أو في مكانك، فوقتك مش بيضيع كل أسبوع.",
+      "text_en": "We film the whole month in one go, in our studio or at your place, so you don't lose time every week."
+    },
+    {
+      "title_ar": "مونتاج بإيقاع سريع وكابشن",
+      "title_en": "Fast-paced edits with captions",
+      "text_ar": "أول 3 ثواني معمولة عشان توقّف السكرول، والكلام مكتوب على الشاشة لأن أغلب الناس بتتفرج من غير صوت.",
+      "text_en": "The first three seconds are built to stop the scroll, with on-screen text because most people watch on mute."
+    },
+    {
+      "title_ar": "جاهزة تشتغل إعلان",
+      "title_en": "Ready to run as ads",
+      "text_ar": "بنجهز نسخ من الريلز للإعلانات الممولة، ونجرّب أكتر من بداية عشان نعرف أنهي واحدة بتجيب رسايل بأقل تكلفة.",
+      "text_en": "We prepare ad versions and test several openings to find the one that brings messages at the lowest cost."
+    }
+  ],
+  "audience_title_ar": "مناسب لمين",
+  "audience_title_en": "Who it's for",
+  "audience_ar": [
+    "عيادات ومراكز طبية",
+    "مطاعم وكافيهات",
+    "عقارات ومطورين",
+    "جيمات وبيوتي",
+    "مدارس وسناتر",
+    "براند شخصي"
+  ],
+  "audience_en": [
+    "Clinics and medical centres",
+    "Restaurants and cafés",
+    "Real estate",
+    "Gyms and beauty",
+    "Schools and tutoring",
+    "Personal brands"
+  ],
+  "box_title_ar": "عايز تجرّب الأول؟",
+  "box_title_en": "Want to try first?",
+  "box_text_ar": "4 ريلز بالتصوير والمونتاج بـ{trial_price} جنيه، وقيمتها بتتخصم من أول شهر لو اشتركت في باقة خلال 30 يوم.",
+  "box_text_en": "4 reels shot and edited for EGP {trial_price}, credited to your first month if you join a plan within 30 days.",
+  "note_ar": "المحتوى الطبي بنراجعه على ضوابط نقابة الأطباء ووزارة الصحة قبل النشر.",
+  "note_en": "Medical content is checked against Egyptian Medical Syndicate and Ministry of Health rules before publishing."
+}

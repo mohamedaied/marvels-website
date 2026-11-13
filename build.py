@@ -42,6 +42,7 @@ CONFIG = {
     "gbp": (SET.get("google_business") or "").strip(),
     "social": {n: SET[k].strip() for k, n in [("instagram", "Instagram"), ("facebook", "Facebook"), ("tiktok", "TikTok"), ("youtube", "YouTube"), ("linkedin", "LinkedIn")] if (SET.get(k) or "").strip()},
     "studio_rate": int(PRICING.get("studio_rate", 700)),
+    "leads_url": (SET.get("leads_url") or "").strip(),
 }
 
 def money(n):
@@ -251,6 +252,7 @@ def head(lang, slug, title, desc, for_artifact=False):
     common = f'''<title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="wa-number" content="{esc(CONFIG["wa_number"])}">
+<meta name="leads-url" content="{esc(CONFIG["leads_url"])}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:type" content="{"article" if art else "website"}">
@@ -646,6 +648,7 @@ def p_studio(lang):
     </div>
     <div class="form-card">
       <form data-wa-form="{esc(L(lang, "حجز استوديو — Marvels", "Studio booking — Marvels"))}" novalidate>
+        <input type="text" name="website_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <div class="form-grid">
           <div class="field"><label for="s-type">{L(lang, "نوع الحجز", "Booking type")}</label>
             <select id="s-type" name="type" data-label="{L(lang, "النوع", "Type")}">
@@ -767,6 +770,7 @@ def p_audit(lang):
   <div class="wrap two-col">
     <div class="form-card">
       <form data-wa-form="{esc(L(lang, "طلب Audit مجاني — Marvels", "Free audit request — Marvels"))}" novalidate>
+        <input type="text" name="website_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <div class="form-grid">
           <div class="field"><label for="a-name">{L(lang, "الاسم", "Name")}</label>
             <input id="a-name" name="name" type="text" autocomplete="name" required data-label="{L(lang, "الاسم", "Name")}"></div>
@@ -1182,6 +1186,10 @@ def build(preview=False):
     admin = os.path.join(HERE, "admin")
     if os.path.isdir(admin):
         shutil.copytree(admin, os.path.join(DIST, "admin"), dirs_exist_ok=True)
+        lp = os.path.join(DIST, "admin", "leads.html")
+        if os.path.exists(lp):
+            t = open(lp, encoding="utf-8").read().replace("__LEADS_URL__", esc(CONFIG["leads_url"]))
+            write(lp, t)
     # 404 + robots + sitemap
     _, d404, _, _ = p_index("ar")
     write(os.path.join(DIST, "404.html"), page("ar", "index", "الصفحة مش موجودة — Marvels", d404,

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>الطلبات — لوحة تحكم Marvels</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;background:#f4f6f8;color:#12324A;font-size:15px}
+header{background:#12324A;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:18px;margin:0;font-weight:700}
+header a{color:#c9d6e2;font-size:14px;text-decoration:none}
+header .sp{flex:1}
+main{padding:20px;max-width:1300px;margin:0 auto}
+.card{background:#fff;border:1px solid #dde4ea;border-radius:12px;padding:20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:#fff;border:1px solid #dde4ea;border-radius:12px;padding:12px 16px}
+.stat small{color:#5d7488;display:block}.stat b{font-size:24px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+input,select,button{font:inherit;border:1px solid #c6d1db;border-radius:8px;padding:8px 12px;background:#fff;color:inherit}
+button{cursor:pointer}.pri{background:#F28C28;border-color:#F28C28;color:#12324A;font-weight:700}
+.wrap{overflow:auto;background:#fff;border:1px solid #dde4ea;border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:900px}
+th,td{padding:10px 12px;border-bottom:1px solid #eef2f5;text-align:right;vertical-align:top;white-space:nowrap}
+td.wide{white-space:normal;min-width:220px}
+th{background:#f8fafb;font-weight:500;color:#5d7488;font-size:13px;position:sticky;top:0}
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:13px;background:#e8eef4}
+.tag.new{background:#fde7d1;color:#8a4a0d}
+a.wa{color:#0f7a4a;text-decoration:none;font-weight:500}
+.err{color:#b42318;margin-top:8px}
+.muted{color:#5d7488}
+</style>
+</head>
+<body>
+<header>
+  <h1>الطلبات</h1>
+  <a href="/admin/">← رجوع للوحة التحكم</a>
+  <span class="sp"></span>
+  <a id="sheet" href="#" target="_blank" rel="noopener" hidden>افتح الشيت ↗</a>
+  <a href="#" id="logout">تسجيل خروج</a>
+</header>
+<main>
+  <div id="login" class="card" hidden>
+    <p style="margin-top:0">اكتب كلمة السر بتاعة الطلبات (KEY اللي كتبتها في Apps Script).</p>
+    <form id="lf" style="display:flex;gap:10px;flex-wrap:wrap">
+      <input id="key" type="password" autocomplete="current-password" placeholder="كلمة السر" style="flex:1;min-width:220px" required>
+      <button class="pri">دخول</button>
+    </form>
+    <div id="lerr" class="err" hidden></div>
+  </div>
+  <div id="nourl" class="card" hidden>
+    <p style="margin:0">لسه مفيش لينك Google Sheet متسجل. حطه من لوحة التحكم ← التواصل والإعدادات ← «لينك تسجيل الطلبات».</p>
+  </div>
+  <div id="app" hidden>
+    <div class="stats">
+      <div class="stat"><small>طلبات جديدة</small><b id="sNew">0</b></div>
+      <div class="stat"><small>آخر 7 أيام</small><b id="sWeek">0</b></div>
+      <div class="stat"><small>الإجمالي</small><b id="sAll">0</b></div>
+    </div>
+    <div class="bar">
+      <input id="q" type="search" placeholder="ابحث بالاسم أو الرقم أو البيزنس" style="flex:1;min-width:220px">
+      <select id="ff"><option value="">كل الفورمات</option></select>
+      <select id="fs"><option value="">كل الحالات</option></select>
+      <button id="rf">تحديث</button>
+    </div>
+    <div class="wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table></div>
+    <p class="muted" style="font-size:13px">الحالة وملاحظات الفريق بتتعدل من الشيت نفسه.</p>
+  </div>
+</main>
+<script>
+(function () {
+  var URL_ = "__LEADS_URL__";
+  var $ = function (id) { return document.getElementById(id); };
+  var data = null;
+  var SHOW = ['التاريخ والوقت','الحالة','الاسم','الموبايل','الفورم','البيزنس','المجال','الهدف','ميزانية الإعلانات','يوم الحجز','ساعة الحجز','الصفحة','ملاحظات العميل','ملاحظات الفريق'];
+  function getKey() { try { return localStorage.getItem('marvels_leads_key') || ''; } catch (e) { return ''; } }
+  function setKey(k) { try { k ? localStorage.setItem('marvels_leads_key', k) : localStorage.removeItem('marvels_leads_key'); } catch (e) {} }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function show(id) { ['login','nourl','app'].forEach(function (x) { $(x).hidden = x !== id; }); }
+
+  function load(key, fromLogin) {
+    $('lerr').hidden = true;
+    fetch(URL_ + (URL_.indexOf('?') < 0 ? '?' : '&') + 'key=' + encodeURIComponent(key))
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (!j.ok) { setKey(''); show('login'); if (fromLogin) { $('lerr').textContent = 'كلمة السر غلط.'; $('lerr').hidden = false; } return; }
+        setKey(key); data = j;
+        if (j.sheetUrl) { $('sheet').href = j.sheetUrl; $('sheet').hidden = false; }
+        fillFilters(); render(); show('app');
+      })
+      .catch(function () { show('login'); $('lerr').textContent = 'معرفتش أوصل للشيت. اتأكد من اللينك وإن الـWeb app متاح لـ Anyone.'; $('lerr').hidden = false; });
+  }
+  function col(name) { return data.headers.indexOf(name); }
+  function fillFilters() {
+    [['ff','الفورم','كل الفورمات'],['fs','الحالة','كل الحالات']].forEach(function (a) {
+      var i = col(a[1]), seen = {}, sel = $(a[0]), cur = sel.value;
+      sel.innerHTML = '<option value="">' + a[2] + '</option>';
+      data.rows.forEach(function (r) { var v = r[i]; if (v && !seen[v]) { seen[v] = 1; sel.insertAdjacentHTML('beforeend', '<option>' + esc(v) + '</option>'); } });
+      sel.value = cur;
+    });
+  }
+  function render() {
+    var idx = SHOW.map(col).filter(function (i) { return i >= 0; });
+    $('th').innerHTML = '<tr>' + idx.map(function (i) { return '<th>' + esc(data.headers[i]) + '</th>'; }).join('') + '</tr>';
+    var q = $('q').value.trim().toLowerCase(), f = $('ff').value, s = $('fs').value;
+    var iF = col('الفورم'), iS = col('الحالة'), iT = col('التاريخ والوقت');
+    data.rows.forEach(function (r, k) { r._t = data.ts ? data.ts[k] : Date.parse(r[iT]); });
+    var rows = data.rows.slice().reverse().filter(function (r) {
+      return (!f || r[iF] === f) && (!s || r[iS] === s) && (!q || r.join(' ').toLowerCase().indexOf(q) >= 0);
+    });
+    var week = Date.now() - 7 * 864e5;
+    $('sAll').textContent = data.rows.length;
+    $('sNew').textContent = data.rows.filter(function (r) { return r[iS] === 'جديد'; }).length;
+    $('sWeek').textContent = data.rows.filter(function (r) { return r._t && r._t >= week; }).length;
+    $('tb').innerHTML = rows.length ? rows.map(function (r) {
+      return '<tr>' + idx.map(function (i) {
+        var h = data.headers[i], v = r[i] || '';
+        if (h === 'الموبايل' && v) { var n = v.replace(/\D/g, ''); if (n.indexOf('0') === 0) n = '2' + n; return '<td dir="ltr"><a class="wa" href="https://wa.me/' + n + '" target="_blank" rel="noopener">' + esc(v) + '</a></td>'; }
+        if (h === 'الصفحة' && /^https?:\/\//.test(v)) return '<td><a href="' + esc(v) + '" target="_blank" rel="noopener">فتح ↗</a></td>';
+        if (h === 'الحالة') return '<td><span class="tag' + (v === 'جديد' ? ' new' : '') + '">' + esc(v) + '</span></td>';
+        return '<td' + (/ملاحظات/.test(h) ? ' class="wide"' : '') + '>' + esc(v) + '</td>';
+      }).join('') + '</tr>';
+    }).join('') : '<tr><td class="muted" colspan="' + idx.length + '">مفيش طلبات.</td></tr>';
+  }
+  $('lf').addEventListener('submit', function (e) { e.preventDefault(); load($('key').value.trim(), true); });
+  ['q','ff','fs'].forEach(function (id) { $(id).addEventListener('input', function () { if (data) render(); }); });
+  $('rf').addEventListener('click', function () { load(getKey()); });
+  $('logout').addEventListener('click', function (e) { e.preventDefault(); setKey(''); data = null; show('login'); });
+
+  if (!URL_ || URL_.indexOf('__') === 0) { show('nourl'); return; }
+  if (getKey()) load(getKey()); else show('login');
+})();
+</script>
+</body>
+</html>

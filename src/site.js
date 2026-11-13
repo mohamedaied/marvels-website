@@ -3,6 +3,8 @@
 (function () {
   var meta = document.querySelector('meta[name="wa-number"]');
   var WA = meta ? meta.getAttribute('content') : '';
+  var lm = document.querySelector('meta[name="leads-url"]');
+  var LEADS = lm ? lm.getAttribute('content') : '';
   var isAr = (document.documentElement.getAttribute('lang') || 'ar').indexOf('ar') === 0;
 
   function waUrl(text) {
@@ -59,6 +61,7 @@
   // Forms that turn into a WhatsApp message
   document.querySelectorAll('form[data-wa-form]').forEach(function (form) {
     var result = form.parentElement.querySelector('.result');
+    form.addEventListener('input', function () { form.removeAttribute('data-sent'); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       form.classList.add('tried');
@@ -71,6 +74,22 @@
       var est = form.querySelector('[data-estimate] b');
       if (est && form.querySelector('[name="type"]').value === 'rental') {
         lines.push((isAr ? 'التكلفة التقديرية' : 'Estimate') + ': ' + est.textContent);
+      }
+      if (LEADS && !form.getAttribute('data-sent')) {
+        var hp = form.querySelector('[name="website_hp"]');
+        if (!(hp && hp.value)) {
+          var data = new URLSearchParams();
+          data.append('form', form.getAttribute('data-wa-form'));
+          data.append('lang', isAr ? 'ar' : 'en');
+          data.append('page', location.pathname);
+          form.querySelectorAll('[name]').forEach(function (el) {
+            if (el.name === 'website_hp') return;
+            var v = el.tagName === 'SELECT' ? el.options[el.selectedIndex].text : el.value.trim();
+            if (v) data.append('f_' + el.name, v);
+          });
+          try { fetch(LEADS, { method: 'POST', mode: 'no-cors', body: data, keepalive: true }); } catch (err) {}
+          form.setAttribute('data-sent', '1');
+        }
       }
       var text = lines.join('\n');
       var url = waUrl(text);

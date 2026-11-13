@@ -1100,6 +1100,7 @@ def links_page():
     d = CONFIG["domain"]
     wa = SET.get("wa_number", "")
     I = {
+      "form": '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
       "web": '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>',
       "wa": '<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2z"/>',
       "phone": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
@@ -1114,8 +1115,7 @@ def links_page():
     def add(key, url, ar, en, primary=False):
         if url:
             items.append((key, url, ar, en, primary))
-    if wa:
-        add("wa", "https://wa.me/" + wa + "?text=" + quote("أهلًا، عايز أحجز جلسة التشخيص المجانية"), "احجز جلسة التشخيص المجانية", "Book a free diagnosis session", True)
+    add("form", d + "/audit", "احجز جلسة التشخيص المجانية", "Book a free diagnosis session", True)
     add("web", d + "/", "الموقع الرسمي", "Website")
     add("ig", SET.get("instagram"), "إنستجرام", "Instagram")
     add("fb", SET.get("facebook"), "فيسبوك", "Facebook")

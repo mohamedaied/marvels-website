@@ -1094,6 +1094,71 @@ def write(path, text):
 def favicon_svg():
     return emblem().replace('currentColor', '#12324A').replace('viewBox="0 0 120 132" aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg" viewBox="-6 -2 132 136"')
 
+def links_page():
+    """Link-in-bio page at /links (the QR on the business cards points here). Built from content/settings.json."""
+    from urllib.parse import quote
+    d = CONFIG["domain"]
+    wa = SET.get("wa_number", "")
+    I = {
+      "web": '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>',
+      "wa": '<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2z"/>',
+      "phone": '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+      "ig": '<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><circle cx="16.5" cy="7.5" r=".6" fill="currentColor"/>',
+      "fb": '<path d="M14 21v-7h3l.5-3.5H14V8.5c0-1 .5-1.5 1.5-1.5H17.5V4h-3A3.5 3.5 0 0 0 11 7.5v3H8V14h3v7"/>',
+      "tt": '<path d="M14 4v11a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.5 2.5 2.5 4 5 4"/>',
+      "in": '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 11v5M8 8v.01M12 16v-5M12 13a2 2 0 0 1 4 0v3"/>',
+      "g": '<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><path d="M10 10l1.5 1.5L14.5 8.5"/>',
+      "map": '<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>',
+    }
+    items = []
+    def add(key, url, ar, en, primary=False):
+        if url:
+            items.append((key, url, ar, en, primary))
+    if wa:
+        add("wa", "https://wa.me/" + wa + "?text=" + quote("أهلًا، عايز أحجز جلسة التشخيص المجانية"), "احجز جلسة التشخيص المجانية", "Book a free diagnosis session", True)
+    add("web", d + "/", "الموقع الرسمي", "Website")
+    add("ig", SET.get("instagram"), "إنستجرام", "Instagram")
+    add("fb", SET.get("facebook"), "فيسبوك", "Facebook")
+    add("tt", SET.get("tiktok"), "تيك توك", "TikTok")
+    add("in", SET.get("linkedin"), "لينكدإن", "LinkedIn")
+    add("yt", SET.get("youtube"), "يوتيوب", "YouTube")
+    if wa:
+        add("wa", "https://wa.me/" + wa, "واتساب", "WhatsApp")
+        add("phone", "tel:+" + wa, "اتصل بينا", SET.get("phone_en", "Call us"))
+    add("g", SET.get("google_business"), "قيّمنا على جوجل", "Review us on Google")
+    add("map", SET.get("maps_url"), SET.get("address_ar", "اللوكيشن"), SET.get("address_en", "Location"))
+    icon = lambda k: f'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{I.get(k, I["web"])}</svg>'
+    rows = "".join(
+        f'<a class="lk{" pri" if pri else ""}" href="{esc(u)}" target="_blank" rel="noopener">{icon(k)}<span><b>{esc(ar)}</b><small>{esc(en)}</small></span></a>'
+        for k, u, ar, en, pri in items)
+    fonts = "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..900&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap"
+    mark = emblem("Marvels").replace('currentColor', '#fff')
+    return f"""<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marvels — كل لينكاتنا</title><meta name="description" content="كل لينكات Marvels: الموقع، السوشيال ميديا، واتساب، واللوكيشن في العبور.">
+<link rel="canonical" href="{d}/links"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:title" content="Marvels — كل لينكاتنا"><meta property="og:image" content="{d}/assets/og.png"><meta property="og:url" content="{d}/links">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="{fonts}">
+<style>
+*{{box-sizing:border-box}}body{{margin:0;min-height:100vh;background:#12324A;color:#fff;font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;display:flex;justify-content:center}}
+main{{width:100%;max-width:460px;padding:44px 20px 32px;text-align:center}}
+.logo{{width:64px;height:70px;margin:0 auto 14px}}.logo svg{{width:100%;height:100%}}
+h1{{font-family:Archivo,sans-serif;font-weight:900;font-stretch:125%;letter-spacing:.04em;font-size:30px;margin:0;direction:ltr}}
+.tag{{color:#c9d6e2;margin:6px 0 4px;font-size:15px}}.sub{{color:#8fa6ba;font-size:12px;letter-spacing:.18em;font-family:Archivo,sans-serif;font-weight:600;direction:ltr;margin:0 0 26px}}
+.seam{{display:flex;height:3px;width:120px;margin:0 auto 26px;border-radius:2px;overflow:hidden}}.seam i{{flex:1}}
+.lk{{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:13px 16px;margin:0 0 10px;text-align:start;transition:background .15s}}
+.lk:hover{{background:rgba(255,255,255,.12)}}.lk svg{{width:24px;height:24px;flex:none;color:#F28C28}}
+.lk span{{display:flex;flex-direction:column;line-height:1.35}}.lk b{{font-weight:500;font-size:16px}}.lk small{{color:#9fb3c5;font-size:12px;font-family:Archivo,sans-serif;direction:ltr;text-align:right}}
+.lk.pri{{background:#F28C28;border-color:#F28C28;color:#12324A}}.lk.pri svg{{color:#12324A}}.lk.pri small{{color:#5a3a12}}
+footer{{color:#6f8aa1;font-size:12px;margin-top:22px;font-family:Archivo,sans-serif;direction:ltr}}
+</style></head><body><main>
+<div class="logo">{mark}</div><h1>MARVELS</h1>
+<p class="tag">وكالة تسويق واستوديو ريلز وبودكاست — العبور</p><p class="sub">MARKETING AGENCY · REELS &amp; PODCAST STUDIO</p>
+<div class="seam"><i style="background:#F28C28"></i><i style="background:#2BB0C2"></i><i style="background:#5B8BD9"></i><i style="background:#E9B84A"></i></div>
+{rows}
+<footer>marvels-digital.com</footer>
+</main></body></html>"""
+
 def build(preview=False):
     if os.path.exists(DIST):
         shutil.rmtree(DIST)
@@ -1121,6 +1186,7 @@ def build(preview=False):
     _, d404, _, _ = p_index("ar")
     write(os.path.join(DIST, "404.html"), page("ar", "index", "الصفحة مش موجودة — Marvels", d404,
         '''<section class="band-navy hero"><div class="wrap" style="grid-template-columns:1fr"><div class="hero-copy"><span class="eyebrow">404</span><h1>الصفحة دي مش موجودة</h1><p class="lead">يمكن اللينك اتغيّر. ارجع للرئيسية أو كلمنا على واتساب.</p><div class="hero-actions"><a class="btn btn-cta" href="/">الرئيسية</a><a class="btn btn-ghost" href="/en/">English</a></div></div></div></section>''').replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/'))
+    write(os.path.join(DIST, "links", "index.html"), links_page())
     write(os.path.join(DIST, "robots.txt"), f"User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: {CONFIG['domain']}/sitemap.xml\n")
     import datetime
     today = datetime.date.today().isoformat()
